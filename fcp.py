@@ -225,7 +225,7 @@ def main():
             st.markdown(f"""
             ##### Introduction
             This page is all about the FCP's top 41 Chess Engine Tournament done by Frank.
-            It contains pairing results, standings, statisitics and game replay of
+            It contains pairing results, standings, statistics and game replay of
             decisive games.
             """)
 
