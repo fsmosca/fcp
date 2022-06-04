@@ -470,7 +470,7 @@ def main():
                 rel="stylesheet" crossorigin>
                 </head>
                 <body>
-                <ct-pgn-viewer board-size="500px" move-list-folding="true">
+                <ct-pgn-viewer board-size="500px" move-list-folding="true" flip="true">
                 {rgame}
                 </ct-pgn-viewer>
                 </body>
