@@ -169,7 +169,6 @@ def replay_grid(df, selected_player, color):
     """
     rgame = None
     col_opp = 'Black' if color == 'White' else 'White'
-    st.markdown(f'##### {col_opp} Opponents')
     df_s = df.loc[(df[color] == selected_player) & (df.Result != '1/2-1/2')]
     df_s = df_s.drop(['Gindex', 'Event', 'Wscore', 'Bscore'], axis=1)
 
@@ -207,7 +206,7 @@ def replay_grid(df, selected_player, color):
 
 def main():
     with st.sidebar:
-        selected = option_menu("Main Menu", ["Home", 'Player List', 'Pairing Results', 'Standing', 'Statistics', 'Replay'],
+        selected = option_menu("Main Menu", ["Home", 'Player List', 'Pairing', 'Standing', 'Statistics', 'Replay'],
             icons=['house', 'person-lines-fill', 'table', 'book', 'file-bar-graph-fill', 'file-play'],
             menu_icon="cast", default_index=0,
             styles={
@@ -220,11 +219,28 @@ def main():
     if selected == 'Home':
         st.markdown(f'# Home')
 
-        st.markdown(f"""
-        ##### Game Source
-        The source of the games is taken from [FCP's top 41 Chess Engines Tournament](https://www.amateurschach.de/main/_fcp-tourney-2022.htm)
-        specifically the fcp-tourney-2022.pgn file.
-        """)
+        cols = st.columns([1, 1])
+
+        with cols[0]:
+            st.markdown(f"""
+            ##### Introduction
+            This page is all about the FCP's top 41 Chess Engine Tournament done by Frank.
+            It contains pairing results, standings, statisitics and game replay of
+            decisive games.
+            """)
+
+            st.markdown(f"""
+            ##### Game Source
+            The source of the games is taken from [FCP's top 41 Chess Engines Tournament](https://www.amateurschach.de/main/_fcp-tourney-2022.htm)
+            specifically the fcp-tourney-2022.pgn file.
+            """)
+
+            st.markdown(f"""
+            ##### Credits
+            [FCP](https://www.amateurschach.de/)  
+            [Streamlit](https://streamlit.io/)  
+            [Python Chess](https://python-chess.readthedocs.io/en/latest/)
+            """)
 
     elif selected == 'Player List':
         st.markdown(f'# {selected}')        
@@ -234,7 +250,7 @@ def main():
         df_p = df_p[['Num', 'Name']]
         AgGrid(df_p)
 
-    elif selected == 'Pairing Results':
+    elif selected == 'Pairing':
         st.markdown(f'# {selected}')
         df_record = load_record()
         df_r = df_record.drop(['Gindex', 'Event', 'Wscore', 'Bscore'], axis=1)
