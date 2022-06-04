@@ -237,9 +237,11 @@ def main():
 
             st.markdown(f"""
             ##### Credits
-            [FCP](https://www.amateurschach.de/)  
+            [Frank's Chess Page](https://www.amateurschach.de/)  
             [Streamlit](https://streamlit.io/)  
-            [Python Chess](https://python-chess.readthedocs.io/en/latest/)
+            [Python Chess](https://python-chess.readthedocs.io/en/latest/)  
+            [Chess Tempo](https://chesstempo.com/)  
+            [Plotly](https://plotly.com/)  
             """)
 
     elif selected == 'Player List':
