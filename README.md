@@ -1,5 +1,5 @@
 # Frank's Chess Page
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([https://docs.streamlit.io/](https://share.streamlit.io/fsmosca/fcp/main/fcp.py)) 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/fsmosca/fcp/main/fcp.py)
 [![Python 3.10.2](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3102/)
 
 A web app built with streamlit on Frank's Chess page for the 2022 Top 41 Chess Engines tournament.
