@@ -416,7 +416,7 @@ def main():
 
         # Engines that defeated opponents whose rating is higher than itself.
         with st.expander('GOOD ENGINES', expanded=True):
-            rdiff = st.number_input('Rating difference', value=100)
+            rdiff = int(st.text_input('Change Rating difference', value=100))
             data = []
             ps = load_standing()
             for p in player.Name:
