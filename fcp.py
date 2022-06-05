@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.7'
+__version__ = '0.8'
 __author__ = 'fsmosca'
 
 
@@ -29,6 +29,15 @@ st.set_page_config(
     page_icon="🧊",
     layout="wide"
 )
+
+if 'wminrating' not in st.session_state:
+    st.session_state.wminrating = 3010
+if 'wmaxrating' not in st.session_state:
+    st.session_state.wmaxrating = 3470
+if 'bminrating' not in st.session_state:
+    st.session_state.bminrating = 3010
+if 'bmaxrating' not in st.session_state:
+    st.session_state.bmaxrating = 3470
 
 
 mat_map = {1:0, 2:3, 3:3, 4:5, 5:10, 6:0}
@@ -414,7 +423,7 @@ def main():
             fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
-            # Ply count histogram on 3-fold repetition
+            # 3.2 Ply count histogram on 3-fold repetition
             df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
             minv = df_rep.Plycnt.min()
             maxv = df_rep.Plycnt.max()
@@ -427,7 +436,10 @@ def main():
                 'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
             }
             df_rep_stat = pd.DataFrame(data)
-            st.write('##### Ply Count on Draw by 3-Fold Repetition')
+            st.markdown('''
+            ##### Ply Count on Draw by 3-Fold Repetition  
+            Hover on the plot to see the ply count range and frequency.
+            ''')
             st.dataframe(df_rep_stat)
             fig2 = px.histogram(df_rep, x="Plycnt")
             st.plotly_chart(fig2, use_container_width=True)
@@ -556,6 +568,59 @@ def main():
             st.write('##### Last 20 by count')
             fig2 = px.bar(df_eco.tail(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
             st.plotly_chart(fig2, use_container_width=True)
+
+        # 8. 3-fold repetition interactive
+        with st.expander('THREEFOLD_REPETITION INTERACTIVE', expanded=True):
+            df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
+            st.markdown(f'''
+            ##### Adjust the sliders to modify the histogram
+            Does the ply count mean higher if players are both stronger compared to when players
+            are both weaker?
+            ''')
+            with st.form(key='form', clear_on_submit=False):
+                cols = st.columns([2, 1, 2])
+                with cols[0]:
+                    st.write('### White')
+                    st.slider('Minimum Rating', 3010, 3470, st.session_state.wminrating, key='wminrating')
+                    st.slider('Maximum Rating', 3010, 3470, st.session_state.wmaxrating, key='wmaxrating')
+                with cols[2]:
+                    st.write('### Black')
+                    st.slider('Minimum Rating', 3010, 3470, st.session_state.bminrating, key='bminrating')
+                    st.slider('Maximum Rating', 3010, 3470, st.session_state.bmaxrating, key='bmaxrating')
+                is_use_opening = st.checkbox('Use Opening')
+                select_opening = st.selectbox('Select Opening', df.Opening.unique())
+                is_calculate = st.form_submit_button('Generate Histogram')
+
+            if is_calculate:
+                df_rep = df_rep.loc[(df.Welo >= st.session_state.wminrating) & 
+                                    (df.Welo <= st.session_state.wmaxrating) & 
+                                    (df.Belo >= st.session_state.bminrating) & 
+                                    (df.Belo <= st.session_state.bmaxrating)]
+                if is_use_opening:
+                    df_rep = df_rep.loc[df_rep.Opening == select_opening]
+
+                if len(df_rep):
+                    minv = df_rep.Plycnt.min()
+                    maxv = df_rep.Plycnt.max()
+                    mean = df_rep.Plycnt.mean()
+                    median = df_rep.Plycnt.median()
+                    mode = df_rep.Plycnt.mode()[0]
+                    stdev = df_rep.Plycnt.std()
+                    data = {
+                        'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
+                        'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
+                    }
+                    df_rep_stat = pd.DataFrame(data)
+                    st.markdown(f'''
+                    ##### Ply Count on Draw by 3-Fold Repetition
+                    white minrating: {st.session_state.wminrating}, white max rating: {st.session_state.wmaxrating}  
+                    black minrating: {st.session_state.bminrating}, black max rating: {st.session_state.bmaxrating}  
+                    ''')
+                    st.dataframe(df_rep_stat)
+                    fig = px.histogram(df_rep, x="Plycnt")
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info('No entries found, try to adjust the sliders!')
 
     elif selected == 'Replay':
         st.markdown(f'# {selected}')
