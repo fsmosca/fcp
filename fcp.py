@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.12'
+__version__ = '0.13'
 __author__ = 'fsmosca'
 
 
@@ -327,15 +327,13 @@ def main():
         # Show the opponents of this selected player.
         with st.expander('OPPONENTS', expanded=True):
             df_player = load_player()
-            selected_player = st.selectbox(label='Select player', options=df_player.Name, index=0)
-
-            # Score against each opp
             df_rec = load_record()
-            player = load_player()
+
+            selected_player = st.selectbox(label='Select player', options=df_player.Name, index=0)            
 
             # Selected player as white.
             dataw = []
-            for p in player['Name']:
+            for p in df_player.Name:
                 if p == selected_player:
                     continue
                 dfrw = df_rec.loc[(df_rec.White == selected_player) & (df_rec.Black == p)]
@@ -348,7 +346,7 @@ def main():
 
             # Selected player as black.
             datab = []
-            for p in player['Name']:
+            for p in df_player.Name:
                 if p == selected_player:
                     continue
                 dfrb = df_rec.loc[(df_rec.Black == selected_player) & (df_rec.White == p)]
@@ -366,6 +364,28 @@ def main():
             with cols[1]:
                 st.write(f'**{selected_player}** black score')
                 AgGrid(dfscoreb, height=1180)
+
+            # Score for all games with both white and black
+            data_wb = []
+            for p in df_player.Name:
+                if p == selected_player:
+                    continue
+                dfw = df_rec.loc[(df_rec.White == selected_player) & (df_rec.Black == p)]
+                score_w = dfw.Wscore.sum()
+                game_w = len(dfw)
+                dfb = df_rec.loc[(df_rec.Black == selected_player) & (df_rec.White == p)]
+                score_b = dfb.Bscore.sum()
+                game_b = len(dfb)
+                score_wb = score_w + score_b
+                game_wb = game_w + game_b
+                pct = round(100*score_wb/game_wb, 2)
+                data_wb.append([p, game_wb, score_wb, pct])
+            df_all = pd.DataFrame(data_wb, columns=['Opponent', 'Games', 'Score', 'Score%'])
+            st.write(f'''
+            ##### Score for all colors
+            Selected player: **{selected_player}**  
+            ''')
+            AgGrid(df_all, height=1180)
 
     elif selected == 'Statistics':
         st.markdown(f'# {selected}')
