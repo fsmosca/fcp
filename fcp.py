@@ -23,6 +23,25 @@ st.set_page_config(
 )
 
 
+mat_map = {1:0, 2:3, 3:3, 4:5, 5:10, 6:0}
+
+
+def get_material(board):
+    """
+    material is the total piece value except king and pawns.
+    knight=3, bishop=3, rook=5, queen=10
+    This is used to identify if end position (mat <= 20) is in ending phase or not.
+
+    Returns material
+    """
+    mat = 0
+    pmap = board.piece_map()
+    for _, v in pmap.items():
+        mat += mat_map[v.piece_type]
+
+    return mat
+
+
 def get_pgn_data(fn):
     max_games = 1000000
     cnt = 0
@@ -59,23 +78,24 @@ def get_pgn_data(fn):
                 wscore += 0.5
                 bscore += 0.5
 
+            mat = get_material(end.board())
+
             if out is None:
                 if result == '1-0' or result == '0-1':
-                    data.append([cnt, event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, 'WIN_ADJUDICATION'])
+                    data.append([event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, mat, 'WIN_ADJUDICATION'])
                 elif result == '1/2-1/2':
-                    data.append([cnt, event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, 'DRAW_ADJUDICATION'])
+                    data.append([event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, mat, 'DRAW_ADJUDICATION'])
                 else:
-                    data.append([cnt, event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, 'OTHERS'])
+                    data.append([event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, mat, 'OTHERS'])
             else:
-                data.append([cnt, event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, out.termination.name])
+                data.append([event, round, white, welo, black, belo, result, wscore, bscore, eco, opening, plycnt, mat, out.termination.name])
 
             cnt += 1
             if cnt >= max_games:
                 break
 
         df = pd.DataFrame(data)
-        df.columns = ['Gindex', 'Event', 'Round', 'White', 'Welo', 'Black', 'Belo', 'Result', 'Wscore', 'Bscore', 'Eco', 'Opening', 'Plycnt', 'Termination']
-        # df = df.sort_values(by=['Round'], ascending=[True])
+        df.columns = ['Event', 'Round', 'White', 'Welo', 'Black', 'Belo', 'Result', 'Wscore', 'Bscore', 'Eco', 'Opening', 'Plycnt', 'Material', 'Termination']
         df.to_csv('record.csv', index=False)
 
         players = list(set(players))
@@ -86,7 +106,7 @@ def get_pgn_data(fn):
         return df, players
 
 def gen_data():
-    fn = 'fcp-tourney-2022.pgn'
+    fn = 'complete_fcp-tourney-2022.pgn'
     df, players = get_pgn_data(fn)
     print(df)
 
@@ -170,7 +190,7 @@ def replay_grid(df, selected_player, color):
     rgame = None
     col_opp = 'Black' if color == 'White' else 'White'
     df_s = df.loc[(df[color] == selected_player) & (df.Result != '1/2-1/2')]
-    df_s = df_s.drop(['Gindex', 'Event', 'Wscore', 'Bscore'], axis=1)
+    df_s = df_s.drop(['Event', 'Wscore', 'Bscore'], axis=1)
 
     st.write('Check the box to load the game.')
     gd = GridOptionsBuilder.from_dataframe(df_s)
@@ -255,7 +275,7 @@ def main():
     elif selected == 'Pairing':
         st.markdown(f'# {selected}')
         df_record = load_record()
-        df_r = df_record.drop(['Gindex', 'Event', 'Wscore', 'Bscore'], axis=1)
+        df_r = df_record.drop(['Event', 'Wscore', 'Bscore'], axis=1)
         AgGrid(df_r)
 
     elif selected == 'Standing':
@@ -331,11 +351,8 @@ def main():
         dfwld = pd.DataFrame(data)
         with st.expander('WIN/LOSS/DRAW', expanded=True):
             AgGrid(dfwld, height=160)
-
-            cols = st.columns([1, 1])
-            with cols[0]:
-                fig = px.bar(dfwld, x="Percent", y="Name", orientation='h', color='Name', height=300, text_auto=True)
-                st.plotly_chart(fig, use_container_width=True)
+            fig = px.bar(dfwld, x="Percent", y="Name", orientation='h', color='Name', height=300, text_auto=True)
+            st.plotly_chart(fig, use_container_width=True)
 
         # Opening
         data = []
@@ -353,12 +370,10 @@ def main():
         dfo = dfo.sort_values(by=['Count', 'Opening'], ascending=[False, True])
         with st.expander('OPENING', expanded=True):
             AgGrid(dfo)
-            cols = st.columns([1, 1])
-            with cols[0]:
-                st.write('##### Top 20')
-                dfo_top10 = dfo.head(20)
-                fig = px.bar(dfo_top10, x="Count%", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
-                st.plotly_chart(fig, use_container_width=True)
+            st.write('##### Top 20')
+            dfo_top10 = dfo.head(20)
+            fig = px.bar(dfo_top10, x="Count%", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
+            st.plotly_chart(fig, use_container_width=True)
 
         # Termination
         data = []
@@ -369,10 +384,8 @@ def main():
         dft = dft.sort_values(by=['Count', 'Termination'], ascending=[False, True])
         with st.expander('GAME TERMINATION', expanded=True):
             AgGrid(dft, height=250)
-            cols = st.columns([1, 1])
-            with cols[0]:
-                fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
-                st.plotly_chart(fig, use_container_width=True)
+            fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
+            st.plotly_chart(fig, use_container_width=True)
 
         # Plycount
         with st.expander('PLYCOUNT', expanded=True):
@@ -451,7 +464,7 @@ def main():
                 rel="stylesheet" crossorigin>
                 </head>
                 <body>
-                <ct-pgn-viewer board-size="500px" move-list-folding="true">
+                <ct-pgn-viewer board-size="300px" move-list-folding="true" move-list-resizable="true" board-resizable="true">
                 {rgame}
                 </ct-pgn-viewer>
                 </body>
@@ -472,7 +485,7 @@ def main():
                 rel="stylesheet" crossorigin>
                 </head>
                 <body>
-                <ct-pgn-viewer board-size="500px" move-list-folding="true" flip="true">
+                <ct-pgn-viewer board-size="300px" move-list-folding="true" move-list-resizable="true" board-resizable="true" flip="true">
                 {rgame}
                 </ct-pgn-viewer>
                 </body>
