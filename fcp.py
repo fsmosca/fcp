@@ -441,6 +441,24 @@ def main():
                 fig2 = px.histogram(dfp, x="Plycnt")
                 st.plotly_chart(fig2, use_container_width=True)
 
+        # Ending
+        with st.expander('ENDING', expanded=True):
+            data = []
+            for p in player.Name:
+                dfw = df.loc[(df.White == p) & (df.Material <= 20)]
+                dfb = df.loc[(df.Black == p) & (df.Material <= 20)]
+                games = len(df)
+                ending = len(dfw) + len(dfb)
+                ending_score = dfw.Wscore.sum() + dfb.Bscore.sum()
+                data.append([p, games, ending, round(100*ending/games, 2), round(100*ending_score/ending, 2)])
+            dfmat = pd.DataFrame(data, columns=['Name', 'Games', 'NumPos', 'NumPos%', 'Score%'])
+            st.markdown(f'''
+            ##### Player ending data
+            Ending is the count of positions where material (excluding king and pawns) at the end
+            of position is 20 or less. Material map: n=b=3, r=5, q=10.
+            ''')
+            AgGrid(dfmat)
+
     elif selected == 'Replay':
         st.markdown(f'# {selected}')
 
