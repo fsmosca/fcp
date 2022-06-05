@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.6'
+__version__ = '0.7'
 __author__ = 'fsmosca'
 
 
@@ -361,7 +361,7 @@ def main():
     elif selected == 'Statistics':
         st.markdown(f'# {selected}')
 
-        # Win/Loss/Draw
+        # 1. Win/Loss/Draw
         df = load_record()
         player = load_player()
 
@@ -381,7 +381,7 @@ def main():
             fig = px.bar(dfwld, x="Percent", y="Name", orientation='h', color='Name', height=300, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
-        # Opening
+        # 2. Opening
         data = []
         for o in df.Opening.unique():
             count = len(df.loc[df.Opening == o])
@@ -402,7 +402,7 @@ def main():
             fig = px.bar(dfo_top10, x="Count%", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
-        # Termination
+        # 3. Termination
         data = []
         for t in df.Termination.unique():
             count = len(df.loc[df.Termination == t])
@@ -414,7 +414,25 @@ def main():
             fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
-        # Engines that defeated opponents whose rating is higher than itself.
+            # Ply count histogram on 3-fold repetition
+            df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
+            minv = df_rep.Plycnt.min()
+            maxv = df_rep.Plycnt.max()
+            mean = df_rep.Plycnt.mean()
+            median = df_rep.Plycnt.median()
+            mode = df_rep.Plycnt.mode()[0]
+            stdev = df_rep.Plycnt.std()
+            data = {
+                'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
+                'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
+            }
+            df_rep_stat = pd.DataFrame(data)
+            st.write('##### Ply Count on Draw by 3-Fold Repetition')
+            st.dataframe(df_rep_stat)
+            fig2 = px.histogram(df_rep, x="Plycnt")
+            st.plotly_chart(fig2, use_container_width=True)
+
+        # 4. Engines that defeated opponents whose rating is higher than itself.
         with st.expander('GOOD ENGINES', expanded=True):
             rdiff = int(st.text_input('Change Rating difference', value=100))
             data = []
@@ -436,7 +454,7 @@ def main():
             ''')
             AgGrid(df_good)
             
-        # Plycount
+        # 5. Plycount
         with st.expander('PLYCOUNT', expanded=True):
             # Win Ply count table by player
             data = []
@@ -490,7 +508,7 @@ def main():
                 fig2 = px.histogram(dfp, x="Plycnt")
                 st.plotly_chart(fig2, use_container_width=True)
 
-        # Ending
+        # 6. Ending
         with st.expander('ENDING', expanded=True):
             data = []
             for p in player.Name:
@@ -518,7 +536,7 @@ def main():
             fig = px.bar(df_etop, x="Score%", y="Name", orientation='h', color='Name', height=700, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
-        # ECO
+        # 7. ECO
         with st.expander('ECO', expanded=True):
             data = []
             for eco in df.Eco.unique():
