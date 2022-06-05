@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.3'
+__version__ = '0.4'
 __author__ = 'fsmosca'
 
 
@@ -20,7 +20,6 @@ import streamlit as st
 from st_aggrid import AgGrid, GridUpdateMode
 from st_aggrid.grid_options_builder import GridOptionsBuilder
 from streamlit_option_menu import option_menu
-import requests
 import streamlit.components.v1 as components
 import plotly.express as px
 
@@ -514,7 +513,7 @@ def main():
         st.markdown(f'### {selected_player}')
         df = load_record()
 
-            # Black opp
+        # Black opp
         with st.expander('BLACK OPPONENTS', expanded=True):
             rgame = replay_grid(df, selected_player, 'White')
             if rgame is not None:
