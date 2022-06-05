@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.9'
+__version__ = '0.10'
 __author__ = 'fsmosca'
 
 
@@ -607,9 +607,14 @@ def main():
                         mode = df_rep.Plycnt.mode()[0]
                         stdev = df_rep.Plycnt.std()
                         data = {
-                            'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
-                            'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
+                            'min': [int(minv)],
+                            'max': [int(maxv)],
+                            'mean': [int(mean)],
+                            'median': [int(median)],
+                            'mode': [int(mode)],
+                            'stdev': [int(stdev)]
                         }
+
                         df_rep_stat = pd.DataFrame(data)
                         st.markdown(f'''
                         ##### Ply Count on Draw by 3-Fold Repetition
