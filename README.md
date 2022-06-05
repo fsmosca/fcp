@@ -1,5 +1,5 @@
 # Frank's Chess Page
-FCP tournament results, summary, game replay and others.
+A web app built with streamlit on Frank's Chess page for the 2022 Top 41 Chess Engines tournament.
 
 Home Page
 
