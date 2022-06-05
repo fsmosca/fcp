@@ -1,8 +1,17 @@
 """
-streamlit
-streamlit-option-menu
+fcp.py
 
+Dependencies:
+    streamlit==1.10.0
+    chess==1.9.1
+    streamlit-aggrid==0.2.3.post2
+    streamlit-option-menu==0.3.2
+    plotly==5.8.0
 """
+
+
+__version__ = '0.1'
+__author__ = 'fsmosca'
 
 
 import chess.pgn
