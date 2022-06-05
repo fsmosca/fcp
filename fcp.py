@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.5'
+__version__ = '0.6'
 __author__ = 'fsmosca'
 
 
@@ -414,6 +414,28 @@ def main():
             fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
+        # Engines that defeated opponents whose rating is higher than itself.
+        with st.expander('GOOD ENGINES', expanded=True):
+            rdiff = st.number_input('Rating difference', value=100)
+            data = []
+            ps = load_standing()
+            for p in player.Name:
+                prating = ps.loc[ps.Name == p].Rating.iloc[0]
+                dfw = df.loc[(df.White == p) & (df.Result == '1-0') & (df.Welo + rdiff <= df.Belo)]
+                dfb = df.loc[(df.Black == p) & (df.Result == '0-1') & (df.Belo + rdiff <= df.Welo)]
+                num_games = len(df.loc[(df.White == p) & (df.Welo + rdiff <= df.Belo)]) + len(df.loc[(df.Black == p) & (df.Belo + rdiff <= df.Welo)])
+                num_wins = len(dfw) + len(dfb)
+                if num_wins:
+                    pct = round(100*num_wins/num_games, 2)
+                    data.append([p, prating, num_games, num_wins, pct])
+            df_good = pd.DataFrame(data, columns=['Name', 'Rating', 'Games', 'Wins', 'Wins%'])
+            df_good = df_good.sort_values(by=['Wins%', 'Games', 'Rating'], ascending=[False, False, False])
+            df_good = df_good.reset_index(drop=True)
+            st.markdown(f''' 
+            ##### Engines that defeated opponents with a {rdiff} or more rating higher than itself.
+            ''')
+            AgGrid(df_good)
+            
         # Plycount
         with st.expander('PLYCOUNT', expanded=True):
             # Win Ply count table by player
