@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.13'
+__version__ = '0.14'
 __author__ = 'fsmosca'
 
 
@@ -611,27 +611,31 @@ def main():
 
         # 8. 3-fold repetition interactive
         if is_threefold:
-            with st.expander('THREEFOLD_REPETITION INTERACTIVE', expanded=True):
+            with st.expander('THREEFOLD REPETITION', expanded=True):
+                st.markdown(f'''
+                The impact of player rating and opening on the ply count and threefold repetition result.
+                ''')
+
+                is_calculate = False
                 df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
                 st.markdown(f'''
-                ##### Adjust the sliders to modify the histogram
-                Does the ply count mean higher if players are both stronger compared to when players
-                are both weaker?
+                Adjust the sliders to modify the histogram
                 ''')
                 with st.form(key='form', clear_on_submit=False):
                     cols = st.columns([2, 1, 2])
                     with cols[0]:
-                        st.write('### White')
-                        a = st.slider('Minimum Rating', 3010, 3470, key='wminrating')
-                        b = st.slider('Maximum Rating', 3010, 3470, 3470, key='wmaxrating')
+                        st.write('### White rating')
+                        a = st.slider('Minimum', 3010, 3470, key='wminrating')
+                        b = st.slider('Maximum', 3010, 3470, 3470, key='wmaxrating')
                     with cols[2]:
-                        st.write('### Black')
-                        c = st.slider('Minimum Rating', 3010, 3470, key='bminrating')
-                        d = st.slider('Maximum Rating', 3010, 3470, 3470, key='bmaxrating')
+                        st.write('### Black rating')
+                        c = st.slider('Minimum', 3010, 3470, key='bminrating')
+                        d = st.slider('Maximum', 3010, 3470, 3470, key='bmaxrating')
                     is_use_opening = st.checkbox('Use Opening')
                     select_opening = st.multiselect('Select Opening', df.Opening.unique())
                     is_calculate = st.form_submit_button('Generate Histogram')
 
+                with st.container():
                     if is_calculate:
                         df_rep = df_rep.loc[(df.Welo >= a) & 
                                             (df.Welo <= b) & 
@@ -669,8 +673,6 @@ def main():
                                 }
                             st.markdown(f'''
                             ##### Ply Count on Draw by 3-Fold Repetition
-                            white minrating: {st.session_state.wminrating}, white max rating: {st.session_state.wmaxrating}  
-                            black minrating: {st.session_state.bminrating}, black max rating: {st.session_state.bmaxrating}  
                             ''')
                             if is_use_opening:
                                 st.dataframe(df_tbs)
