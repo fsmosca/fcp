@@ -471,7 +471,18 @@ def main():
             Ending is the count of positions where material (excluding king and pawns) at the end
             of position is 20 or less. Material map: n=b=3, r=5, q=10.
             ''')
-            AgGrid(dfmat)
+            AgGrid(dfmat, height=200)
+
+            # Engines with 50% or more Score
+            df_etop = dfmat.loc[dfmat['Score%'] >= 50]
+            df_etop = df_etop.sort_values(by=['Score%', 'NumPos'], ascending=[False, False])
+            df_etop = df_etop.reset_index(drop=True)
+            st.write('##### Top engines in ending')
+            AgGrid(df_etop, height=200)
+            st.write('##### Engines that scored 50% or more')
+            fig = px.bar(df_etop, x="Score%", y="Name", orientation='h', color='Name', height=700, text_auto=True)
+            st.plotly_chart(fig, use_container_width=True)
+
 
     elif selected == 'Replay':
         st.markdown(f'# {selected}')
