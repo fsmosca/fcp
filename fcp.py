@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.4'
+__version__ = '0.5'
 __author__ = 'fsmosca'
 
 
@@ -166,6 +166,9 @@ def load_player():
 
 @st.cache
 def load_standing():
+    """
+    Returns a dataframe of player standings.
+    """
     return pd.read_csv('standing.csv')
 
 
@@ -283,7 +286,17 @@ def main():
         df_p = df_player.copy()
         df_p['Num'] = list(range(1, len(df_player)+1))
         df_p = df_p[['Num', 'Name']]
-        AgGrid(df_p)
+
+        cols = st.columns([1, 1])
+        with cols[0]:
+            st.write('##### Before tournament')
+            AgGrid(df_p, height=1200)
+
+        dfs = load_standing()
+        with cols[1]:
+            st.write('##### After tournament')
+            df_s = dfs[['Rank', 'Name', 'Rating']]
+            AgGrid(df_s, height=1200)
 
     elif selected == 'Pairing':
         st.markdown(f'# {selected}')
