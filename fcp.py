@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.11'
+__version__ = '0.12'
 __author__ = 'fsmosca'
 
 
@@ -370,277 +370,298 @@ def main():
     elif selected == 'Statistics':
         st.markdown(f'# {selected}')
 
+        st.sidebar.write('Statistics sub menu')
+        with st.sidebar.expander('Select items to include', expanded=True):
+            with st.form(key='sform'):
+                is_wld = st.checkbox('Win/Loss/Draw', key='win_loss_draw')
+                is_opening = st.checkbox('Opening', key='opening')
+                is_termination = st.checkbox('Termination', key='termination')
+                is_good_engine = st.checkbox('Good engines', key='good_engines')
+                is_plycnt = st.checkbox('PlyCount', key='plycnt')
+                is_ending = st.checkbox('Ending', key='ending')
+                is_eco = st.checkbox('ECO', key='eco')
+                is_threefold = st.checkbox('ThreeFold repetition', key='threefold')
+                st.form_submit_button()
+
         # 1. Win/Loss/Draw
         df = load_record()
         player = load_player()
-
         games = len(df)
-        wwins = df.loc[df.Result == '1-0']
-        bwins = df.loc[df.Result == '0-1']
-        draws = df.loc[df.Result == '1/2-1/2']
 
-        data = {
-            'Name': ['Games', 'White Wins', 'Black Wins', 'Draws'],
-            'Count': [games, len(wwins), len(bwins), len(draws)],
-            'Percent': [100, round(100*len(wwins)/games, 2), round(100*len(bwins)/games, 2), round(100*len(draws)/games, 2)]
-        }
-        dfwld = pd.DataFrame(data)
-        with st.expander('WIN/LOSS/DRAW', expanded=True):
-            AgGrid(dfwld, height=160)
-            fig = px.bar(dfwld, x="Percent", y="Name", orientation='h', color='Name', height=300, text_auto=True)
-            st.plotly_chart(fig, use_container_width=True)
+        if is_wld:
+            wwins = df.loc[df.Result == '1-0']
+            bwins = df.loc[df.Result == '0-1']
+            draws = df.loc[df.Result == '1/2-1/2']
+
+            data = {
+                'Name': ['Games', 'White Wins', 'Black Wins', 'Draws'],
+                'Count': [games, len(wwins), len(bwins), len(draws)],
+                'Percent': [100, round(100*len(wwins)/games, 2), round(100*len(bwins)/games, 2), round(100*len(draws)/games, 2)]
+            }
+            dfwld = pd.DataFrame(data)
+            with st.expander('WIN/LOSS/DRAW', expanded=True):
+                AgGrid(dfwld, height=160)
+                fig = px.bar(dfwld, x="Percent", y="Name", orientation='h', color='Name', height=300, text_auto=True)
+                st.plotly_chart(fig, use_container_width=True)
 
         # 2. Opening
-        data = []
-        for o in df.Opening.unique():
-            count = len(df.loc[df.Opening == o])
-            wwin = df.loc[(df.Opening == o) & (df.Result == '1-0')]
-            bwin = df.loc[(df.Opening == o) & (df.Result == '0-1')]
-            wpct, bpct = 0, 0
-            if len(wwin):
-                wpct = round(100*len(wwin) / count, 2)
-            if len(bwin):
-                bpct = round(100*len(bwin) / count, 2)
-            data.append([o, games, count, round(100*count/games, 3), wpct, bpct])
-        dfo = pd.DataFrame(data, columns=['Opening', 'Games', 'Count', 'Count%', 'WhiteWin%', 'BlackWin%'])
-        dfo = dfo.sort_values(by=['Count', 'Opening'], ascending=[False, True])
-        with st.expander('OPENING', expanded=True):
-            AgGrid(dfo)
-            st.write('##### Top 20')
-            dfo_top10 = dfo.head(20)
-            fig = px.bar(dfo_top10, x="Count%", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
-            st.plotly_chart(fig, use_container_width=True)
+        if is_opening:
+            data = []
+            for o in df.Opening.unique():
+                count = len(df.loc[df.Opening == o])
+                wwin = df.loc[(df.Opening == o) & (df.Result == '1-0')]
+                bwin = df.loc[(df.Opening == o) & (df.Result == '0-1')]
+                wpct, bpct = 0, 0
+                if len(wwin):
+                    wpct = round(100*len(wwin) / count, 2)
+                if len(bwin):
+                    bpct = round(100*len(bwin) / count, 2)
+                data.append([o, games, count, round(100*count/games, 3), wpct, bpct])
+            dfo = pd.DataFrame(data, columns=['Opening', 'Games', 'Count', 'Count%', 'WhiteWin%', 'BlackWin%'])
+            dfo = dfo.sort_values(by=['Count', 'Opening'], ascending=[False, True])
+            with st.expander('OPENING', expanded=True):
+                AgGrid(dfo)
+                st.write('##### Top 20')
+                dfo_top10 = dfo.head(20)
+                fig = px.bar(dfo_top10, x="Count%", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
+                st.plotly_chart(fig, use_container_width=True)
 
         # 3. Termination
-        data = []
-        for t in df.Termination.unique():
-            count = len(df.loc[df.Termination == t])
-            data.append([t, count, round(100*count/games, 3)])
-        dft = pd.DataFrame(data, columns=['Termination', 'Count', 'Percent'])
-        dft = dft.sort_values(by=['Count', 'Termination'], ascending=[False, True])
-        with st.expander('GAME TERMINATION', expanded=True):
-            AgGrid(dft, height=250)
-            fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
-            st.plotly_chart(fig, use_container_width=True)
-
-            # 3.2 Ply count histogram on 3-fold repetition
-            df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
-            minv = df_rep.Plycnt.min()
-            maxv = df_rep.Plycnt.max()
-            mean = df_rep.Plycnt.mean()
-            median = df_rep.Plycnt.median()
-            mode = df_rep.Plycnt.mode()[0]
-            stdev = df_rep.Plycnt.std()
-            data = {
-                'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
-                'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
-            }
-            df_rep_stat = pd.DataFrame(data)
-            st.markdown('''
-            ##### Ply Count on Draw by 3-Fold Repetition  
-            Hover on the plot to see the ply count range and frequency.
-            ''')
-            st.dataframe(df_rep_stat)
-            fig2 = px.histogram(df_rep, x="Plycnt")
-            st.plotly_chart(fig2, use_container_width=True)
-
-        # 4. Engines that defeated opponents whose rating is higher than itself.
-        with st.expander('GOOD ENGINES', expanded=True):
-            rdiff = int(st.text_input('Change Rating difference', value=100))
+        if is_termination:
             data = []
-            ps = load_standing()
-            for p in player.Name:
-                prating = ps.loc[ps.Name == p].Rating.iloc[0]
-                dfw = df.loc[(df.White == p) & (df.Result == '1-0') & (df.Welo + rdiff <= df.Belo)]
-                dfb = df.loc[(df.Black == p) & (df.Result == '0-1') & (df.Belo + rdiff <= df.Welo)]
-                num_games = len(df.loc[(df.White == p) & (df.Welo + rdiff <= df.Belo)]) + len(df.loc[(df.Black == p) & (df.Belo + rdiff <= df.Welo)])
-                num_wins = len(dfw) + len(dfb)
-                if num_wins:
-                    pct = round(100*num_wins/num_games, 2)
-                    data.append([p, prating, num_games, num_wins, pct])
-            df_good = pd.DataFrame(data, columns=['Name', 'Rating', 'Games', 'Wins', 'Wins%'])
-            df_good = df_good.sort_values(by=['Wins%', 'Games', 'Rating'], ascending=[False, False, False])
-            df_good = df_good.reset_index(drop=True)
-            st.markdown(f''' 
-            ##### Engines that defeated opponents with a {rdiff} or more rating higher than itself.
-            ''')
-            AgGrid(df_good)
-            
-        # 5. Plycount
-        with st.expander('PLYCOUNT', expanded=True):
-            # Win Ply count table by player
-            data = []
-            for p in player.Name:
-                dfwwin = df.loc[(df.White == p) & (df.Result == '1-0')]
-                dfbwin = df.loc[(df.Black == p) & (df.Result == '0-1')]
-                dfwwin_plycnt_mean = dfwwin.Plycnt.mean()
-                dfbwin_plycnt_mean = dfbwin.Plycnt.mean()
-                data.append([p, int(dfwwin_plycnt_mean), int(dfbwin_plycnt_mean)])
-            dfplycnt = pd.DataFrame(data, columns=['Name', 'White', 'Black'])
-            st.markdown(f'''
-            ##### Win Plycnt Mean
-            The average ply count for white and black when the player wins.
-            ''')
-            AgGrid(dfplycnt)
+            for t in df.Termination.unique():
+                count = len(df.loc[df.Termination == t])
+                data.append([t, count, round(100*count/games, 3)])
+            dft = pd.DataFrame(data, columns=['Termination', 'Count', 'Percent'])
+            dft = dft.sort_values(by=['Count', 'Termination'], ascending=[False, True])
+            with st.expander('GAME TERMINATION', expanded=True):
+                AgGrid(dft, height=250)
+                fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-            st.write(f'##### Compare players by ply count')
-            cols = st.columns([1, 1])
-            with cols[0]:
-                player_sel = st.selectbox('Select player', options=df.White.unique(), index=33, key=1)
-                dfp = df.loc[(df.White == player_sel) | (df.Black == player_sel)]
-                minv = dfp.Plycnt.min()
-                maxv = dfp.Plycnt.max()
-                mean = dfp.Plycnt.mean()
-                median = dfp.Plycnt.median()
-                mode = dfp.Plycnt.mode()[0]
-                stdev = dfp.Plycnt.std()
+                # 3.2 Ply count histogram on 3-fold repetition
+                df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
+                minv = df_rep.Plycnt.min()
+                maxv = df_rep.Plycnt.max()
+                mean = df_rep.Plycnt.mean()
+                median = df_rep.Plycnt.median()
+                mode = df_rep.Plycnt.mode()[0]
+                stdev = df_rep.Plycnt.std()
                 data = {
                     'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
                     'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
                 }
-                df_stat = pd.DataFrame(data)
-                st.dataframe(df_stat)
-                fig1 = px.histogram(dfp, x="Plycnt")
-                st.plotly_chart(fig1, use_container_width=True)
-            with cols[1]:
-                player_sel = st.selectbox('Select player', options=df.White.unique(), index=13, key=2)
-                dfp = df.loc[(df.White == player_sel) | (df.Black == player_sel)]
-                minv = dfp.Plycnt.min()
-                maxv = dfp.Plycnt.max()
-                mean = dfp.Plycnt.mean()
-                median = dfp.Plycnt.median()
-                mode = dfp.Plycnt.mode()[0]
-                stdev = dfp.Plycnt.std()
-                data = {
-                    'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
-                    'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
-                }
-                df_stat = pd.DataFrame(data)
-                st.write(df_stat)
-                fig2 = px.histogram(dfp, x="Plycnt")
+                df_rep_stat = pd.DataFrame(data)
+                st.markdown('''
+                ##### Ply Count on Draw by 3-Fold Repetition  
+                Hover on the plot to see the ply count range and frequency.
+                ''')
+                st.dataframe(df_rep_stat)
+                fig2 = px.histogram(df_rep, x="Plycnt")
                 st.plotly_chart(fig2, use_container_width=True)
 
+        # 4. Engines that defeated opponents whose rating is higher than itself.
+        if is_good_engine:
+            with st.expander('GOOD ENGINES', expanded=True):
+                rdiff = int(st.text_input('Change Rating difference', value=100))
+                data = []
+                ps = load_standing()
+                for p in player.Name:
+                    prating = ps.loc[ps.Name == p].Rating.iloc[0]
+                    dfw = df.loc[(df.White == p) & (df.Result == '1-0') & (df.Welo + rdiff <= df.Belo)]
+                    dfb = df.loc[(df.Black == p) & (df.Result == '0-1') & (df.Belo + rdiff <= df.Welo)]
+                    num_games = len(df.loc[(df.White == p) & (df.Welo + rdiff <= df.Belo)]) + len(df.loc[(df.Black == p) & (df.Belo + rdiff <= df.Welo)])
+                    num_wins = len(dfw) + len(dfb)
+                    if num_wins:
+                        pct = round(100*num_wins/num_games, 2)
+                        data.append([p, prating, num_games, num_wins, pct])
+                df_good = pd.DataFrame(data, columns=['Name', 'Rating', 'Games', 'Wins', 'Wins%'])
+                df_good = df_good.sort_values(by=['Wins%', 'Games', 'Rating'], ascending=[False, False, False])
+                df_good = df_good.reset_index(drop=True)
+                st.markdown(f''' 
+                ##### Engines that defeated opponents with a {rdiff} or more rating higher than itself.
+                ''')
+                AgGrid(df_good)
+            
+        # 5. Plycount
+        if is_plycnt:
+            with st.expander('PLYCOUNT', expanded=True):
+                # Win Ply count table by player
+                data = []
+                for p in player.Name:
+                    dfwwin = df.loc[(df.White == p) & (df.Result == '1-0')]
+                    dfbwin = df.loc[(df.Black == p) & (df.Result == '0-1')]
+                    dfwwin_plycnt_mean = dfwwin.Plycnt.mean()
+                    dfbwin_plycnt_mean = dfbwin.Plycnt.mean()
+                    data.append([p, int(dfwwin_plycnt_mean), int(dfbwin_plycnt_mean)])
+                dfplycnt = pd.DataFrame(data, columns=['Name', 'White', 'Black'])
+                st.markdown(f'''
+                ##### Win Plycnt Mean
+                The average ply count for white and black when the player wins.
+                ''')
+                AgGrid(dfplycnt)
+
+                st.write(f'##### Compare players by ply count')
+                cols = st.columns([1, 1])
+                with cols[0]:
+                    player_sel = st.selectbox('Select player', options=df.White.unique(), index=33, key=1)
+                    dfp = df.loc[(df.White == player_sel) | (df.Black == player_sel)]
+                    minv = dfp.Plycnt.min()
+                    maxv = dfp.Plycnt.max()
+                    mean = dfp.Plycnt.mean()
+                    median = dfp.Plycnt.median()
+                    mode = dfp.Plycnt.mode()[0]
+                    stdev = dfp.Plycnt.std()
+                    data = {
+                        'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
+                        'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
+                    }
+                    df_stat = pd.DataFrame(data)
+                    st.dataframe(df_stat)
+                    fig1 = px.histogram(dfp, x="Plycnt")
+                    st.plotly_chart(fig1, use_container_width=True)
+                with cols[1]:
+                    player_sel = st.selectbox('Select player', options=df.White.unique(), index=13, key=2)
+                    dfp = df.loc[(df.White == player_sel) | (df.Black == player_sel)]
+                    minv = dfp.Plycnt.min()
+                    maxv = dfp.Plycnt.max()
+                    mean = dfp.Plycnt.mean()
+                    median = dfp.Plycnt.median()
+                    mode = dfp.Plycnt.mode()[0]
+                    stdev = dfp.Plycnt.std()
+                    data = {
+                        'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
+                        'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
+                    }
+                    df_stat = pd.DataFrame(data)
+                    st.write(df_stat)
+                    fig2 = px.histogram(dfp, x="Plycnt")
+                    st.plotly_chart(fig2, use_container_width=True)
+
         # 6. Ending
-        with st.expander('ENDING', expanded=True):
-            data = []
-            for p in player.Name:
-                dfw = df.loc[(df.White == p) & (df.Material <= 20)]
-                dfb = df.loc[(df.Black == p) & (df.Material <= 20)]
-                games = len(df)
-                ending = len(dfw) + len(dfb)
-                ending_score = dfw.Wscore.sum() + dfb.Bscore.sum()
-                data.append([p, games, ending, round(100*ending/games, 2), round(100*ending_score/ending, 2)])
-            dfmat = pd.DataFrame(data, columns=['Name', 'Games', 'NumPos', 'NumPos%', 'Score%'])
-            st.markdown(f'''
-            ##### Player ending data
-            Ending is the count of positions where material (excluding king and pawns) at the end
-            of position is 20 or less. Material map: n=b=3, r=5, q=10.
-            ''')
-            AgGrid(dfmat, height=200)
+        if is_ending:
+            with st.expander('ENDING', expanded=True):
+                data = []
+                for p in player.Name:
+                    dfw = df.loc[(df.White == p) & (df.Material <= 20)]
+                    dfb = df.loc[(df.Black == p) & (df.Material <= 20)]
+                    games = len(df)
+                    ending = len(dfw) + len(dfb)
+                    ending_score = dfw.Wscore.sum() + dfb.Bscore.sum()
+                    data.append([p, games, ending, round(100*ending/games, 2), round(100*ending_score/ending, 2)])
+                dfmat = pd.DataFrame(data, columns=['Name', 'Games', 'NumPos', 'NumPos%', 'Score%'])
+                st.markdown(f'''
+                ##### Player ending data
+                Ending is the count of positions where material (excluding king and pawns) at the end
+                of position is 20 or less. Material map: n=b=3, r=5, q=10.
+                ''')
+                AgGrid(dfmat, height=200)
 
-            # Engines with 50% or more Score
-            df_etop = dfmat.loc[dfmat['Score%'] >= 50]
-            df_etop = df_etop.sort_values(by=['Score%', 'NumPos'], ascending=[False, False])
-            df_etop = df_etop.reset_index(drop=True)
-            st.write('##### Top engines in ending')
-            AgGrid(df_etop, height=200)
-            st.write('##### Engines that scored 50% or more')
-            fig = px.bar(df_etop, x="Score%", y="Name", orientation='h', color='Name', height=700, text_auto=True)
-            st.plotly_chart(fig, use_container_width=True)
-
+                # Engines with 50% or more Score
+                df_etop = dfmat.loc[dfmat['Score%'] >= 50]
+                df_etop = df_etop.sort_values(by=['Score%', 'NumPos'], ascending=[False, False])
+                df_etop = df_etop.reset_index(drop=True)
+                st.write('##### Top engines in ending')
+                AgGrid(df_etop, height=200)
+                st.write('##### Engines that scored 50% or more')
+                fig = px.bar(df_etop, x="Score%", y="Name", orientation='h', color='Name', height=700, text_auto=True)
+                st.plotly_chart(fig, use_container_width=True)
+        
         # 7. ECO
-        with st.expander('ECO', expanded=True):
-            data = []
-            for eco in df.Eco.unique():
-                dfe = df.loc[df.Eco == eco]
-                count = len(dfe)
-                pct = round(100*count/games, 3)
-                data.append([eco, games, count, pct])
-            df_eco = pd.DataFrame(data, columns=['ECO', 'Games', 'Count', 'Count%'])
-            df_eco = df_eco.sort_values(by=['Count'], ascending=[False])
-            df_eco = df_eco.reset_index(drop=True)
-            AgGrid(df_eco, height=200)
+        if is_eco:        
+            with st.expander('ECO', expanded=True):
+                data = []
+                for eco in df.Eco.unique():
+                    dfe = df.loc[df.Eco == eco]
+                    count = len(dfe)
+                    pct = round(100*count/games, 3)
+                    data.append([eco, games, count, pct])
+                df_eco = pd.DataFrame(data, columns=['ECO', 'Games', 'Count', 'Count%'])
+                df_eco = df_eco.sort_values(by=['Count'], ascending=[False])
+                df_eco = df_eco.reset_index(drop=True)
+                AgGrid(df_eco, height=200)
 
-            st.write('##### Top 20 by count')
-            fig1 = px.bar(df_eco.head(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
-            st.plotly_chart(fig1, use_container_width=True)
+                st.write('##### Top 20 by count')
+                fig1 = px.bar(df_eco.head(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
+                st.plotly_chart(fig1, use_container_width=True)
 
-            st.write('##### Last 20 by count')
-            fig2 = px.bar(df_eco.tail(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
-            st.plotly_chart(fig2, use_container_width=True)
+                st.write('##### Last 20 by count')
+                fig2 = px.bar(df_eco.tail(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
+                st.plotly_chart(fig2, use_container_width=True)
 
         # 8. 3-fold repetition interactive
-        with st.expander('THREEFOLD_REPETITION INTERACTIVE', expanded=True):
-            df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
-            st.markdown(f'''
-            ##### Adjust the sliders to modify the histogram
-            Does the ply count mean higher if players are both stronger compared to when players
-            are both weaker?
-            ''')
-            with st.form(key='form', clear_on_submit=False):
-                cols = st.columns([2, 1, 2])
-                with cols[0]:
-                    st.write('### White')
-                    a = st.slider('Minimum Rating', 3010, 3470, key='wminrating')
-                    b = st.slider('Maximum Rating', 3010, 3470, 3470, key='wmaxrating')
-                with cols[2]:
-                    st.write('### Black')
-                    c = st.slider('Minimum Rating', 3010, 3470, key='bminrating')
-                    d = st.slider('Maximum Rating', 3010, 3470, 3470, key='bmaxrating')
-                is_use_opening = st.checkbox('Use Opening')
-                select_opening = st.multiselect('Select Opening', df.Opening.unique())
-                is_calculate = st.form_submit_button('Generate Histogram')
+        if is_threefold:
+            with st.expander('THREEFOLD_REPETITION INTERACTIVE', expanded=True):
+                df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
+                st.markdown(f'''
+                ##### Adjust the sliders to modify the histogram
+                Does the ply count mean higher if players are both stronger compared to when players
+                are both weaker?
+                ''')
+                with st.form(key='form', clear_on_submit=False):
+                    cols = st.columns([2, 1, 2])
+                    with cols[0]:
+                        st.write('### White')
+                        a = st.slider('Minimum Rating', 3010, 3470, key='wminrating')
+                        b = st.slider('Maximum Rating', 3010, 3470, 3470, key='wmaxrating')
+                    with cols[2]:
+                        st.write('### Black')
+                        c = st.slider('Minimum Rating', 3010, 3470, key='bminrating')
+                        d = st.slider('Maximum Rating', 3010, 3470, 3470, key='bmaxrating')
+                    is_use_opening = st.checkbox('Use Opening')
+                    select_opening = st.multiselect('Select Opening', df.Opening.unique())
+                    is_calculate = st.form_submit_button('Generate Histogram')
 
-                if is_calculate:
-                    df_rep = df_rep.loc[(df.Welo >= a) & 
-                                        (df.Welo <= b) & 
-                                        (df.Belo >= c) & 
-                                        (df.Belo <= d)]
-                    if is_use_opening:
-                        tbo = []
-                        tbs = []
-                        for o in select_opening:
-                            df1 = df_rep.loc[df_rep.Opening == o]
-                            if len(df1):
-                                tbo.append(df1)
-                                tbs.append([o, int(df1.Plycnt.mean())])
-                            else:
-                                tbo.append(pd.DataFrame())
-                                tbs.append([o, 0])
-                        df_rep = pd.concat(tbo, ignore_index=True)
-                        df_tbs = pd.DataFrame(tbs, columns=['Opening', 'Mean'])
-
-                    if len(df_rep):
-                        if not is_use_opening:
-                            minv = df_rep.Plycnt.min()
-                            maxv = df_rep.Plycnt.max()
-                            mean = df_rep.Plycnt.mean()
-                            median = df_rep.Plycnt.median()
-                            mode = df_rep.Plycnt.mode()[0]
-                            stdev = df_rep.Plycnt.std()
-                            data = {
-                                'min': [int(minv)],
-                                'max': [int(maxv)],
-                                'mean': [int(mean)],
-                                'median': [int(median)],
-                                'mode': [int(mode)],
-                                'stdev': [int(stdev)]
-                            }
-                        st.markdown(f'''
-                        ##### Ply Count on Draw by 3-Fold Repetition
-                        white minrating: {st.session_state.wminrating}, white max rating: {st.session_state.wmaxrating}  
-                        black minrating: {st.session_state.bminrating}, black max rating: {st.session_state.bmaxrating}  
-                        ''')
+                    if is_calculate:
+                        df_rep = df_rep.loc[(df.Welo >= a) & 
+                                            (df.Welo <= b) & 
+                                            (df.Belo >= c) & 
+                                            (df.Belo <= d)]
                         if is_use_opening:
-                            st.dataframe(df_tbs)
-                            fig = px.histogram(df_rep, x="Plycnt", color='Opening')
+                            tbo = []
+                            tbs = []
+                            for o in select_opening:
+                                df1 = df_rep.loc[df_rep.Opening == o]
+                                if len(df1):
+                                    tbo.append(df1)
+                                    tbs.append([o, int(df1.Plycnt.mean())])
+                                else:
+                                    tbo.append(pd.DataFrame())
+                                    tbs.append([o, 0])
+                            df_rep = pd.concat(tbo, ignore_index=True)
+                            df_tbs = pd.DataFrame(tbs, columns=['Opening', 'Mean'])
+
+                        if len(df_rep):
+                            if not is_use_opening:
+                                minv = df_rep.Plycnt.min()
+                                maxv = df_rep.Plycnt.max()
+                                mean = df_rep.Plycnt.mean()
+                                median = df_rep.Plycnt.median()
+                                mode = df_rep.Plycnt.mode()[0]
+                                stdev = df_rep.Plycnt.std()
+                                data = {
+                                    'min': [int(minv)],
+                                    'max': [int(maxv)],
+                                    'mean': [int(mean)],
+                                    'median': [int(median)],
+                                    'mode': [int(mode)],
+                                    'stdev': [int(stdev)]
+                                }
+                            st.markdown(f'''
+                            ##### Ply Count on Draw by 3-Fold Repetition
+                            white minrating: {st.session_state.wminrating}, white max rating: {st.session_state.wmaxrating}  
+                            black minrating: {st.session_state.bminrating}, black max rating: {st.session_state.bmaxrating}  
+                            ''')
+                            if is_use_opening:
+                                st.dataframe(df_tbs)
+                                fig = px.histogram(df_rep, x="Plycnt", color='Opening')
+                            else:
+                                df_rep_stat = pd.DataFrame(data)
+                                st.dataframe(df_rep_stat)
+                                fig = px.histogram(df_rep, x="Plycnt")
+                            st.plotly_chart(fig, use_container_width=True)
                         else:
-                            df_rep_stat = pd.DataFrame(data)
-                            st.dataframe(df_rep_stat)
-                            fig = px.histogram(df_rep, x="Plycnt")
-                        st.plotly_chart(fig, use_container_width=True)
-                    else:
-                        st.info('No entries found, try to adjust the sliders!')
+                            st.info('No entries found, try to adjust the sliders!')
 
     elif selected == 'Replay':
         st.markdown(f'# {selected}')
