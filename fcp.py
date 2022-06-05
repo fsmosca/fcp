@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.1'
+__version__ = '0.2'
 __author__ = 'fsmosca'
 
 
@@ -483,6 +483,26 @@ def main():
             fig = px.bar(df_etop, x="Score%", y="Name", orientation='h', color='Name', height=700, text_auto=True)
             st.plotly_chart(fig, use_container_width=True)
 
+        # ECO
+        with st.expander('ECO', expanded=True):
+            data = []
+            for eco in df.Eco.unique():
+                dfe = df.loc[df.Eco == eco]
+                count = len(dfe)
+                pct = round(100*count/games, 3)
+                data.append([eco, games, count, pct])
+            df_eco = pd.DataFrame(data, columns=['ECO', 'Games', 'Count', 'Count%'])
+            df_eco = df_eco.sort_values(by=['Count'], ascending=[False])
+            df_eco = df_eco.reset_index(drop=True)
+            AgGrid(df_eco, height=200)
+
+            st.write('##### Top 20 by count')
+            fig1 = px.bar(df_eco.head(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
+            st.plotly_chart(fig1, use_container_width=True)
+            
+            st.write('##### Last 20 by count')
+            fig2 = px.bar(df_eco.tail(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
+            st.plotly_chart(fig2, use_container_width=True)
 
     elif selected == 'Replay':
         st.markdown(f'# {selected}')
