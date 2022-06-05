@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.2'
+__version__ = '0.3'
 __author__ = 'fsmosca'
 
 
@@ -299,6 +299,7 @@ def main():
         with st.expander('RANKING', expanded=True):
             st.markdown(f'''
             The rating is generated using the Ordo program. Shredder 13 POPCNT x64 at 3125 is set as reference.
+            Ratings are rounded to the nearest ten for visual clarity.
             ''')
             AgGrid(df_standing, height=1200)
 
@@ -499,7 +500,7 @@ def main():
             st.write('##### Top 20 by count')
             fig1 = px.bar(df_eco.head(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
             st.plotly_chart(fig1, use_container_width=True)
-            
+
             st.write('##### Last 20 by count')
             fig2 = px.bar(df_eco.tail(20), x="Count", y="ECO", orientation='h', color='ECO', height=800, text_auto=True)
             st.plotly_chart(fig2, use_container_width=True)
