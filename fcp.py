@@ -256,6 +256,11 @@ def main():
             """)
 
             st.markdown(f"""
+            ##### Web App Source
+            The python source code of this application can be found in https://github.com/fsmosca/fcp.
+            """)
+
+            st.markdown(f"""
             ##### Credits
             [Frank's Chess Page](https://www.amateurschach.de/)  
             [Streamlit](https://streamlit.io/)  
