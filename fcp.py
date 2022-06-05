@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.10'
+__version__ = '0.11'
 __author__ = 'fsmosca'
 
 
@@ -588,7 +588,7 @@ def main():
                     c = st.slider('Minimum Rating', 3010, 3470, key='bminrating')
                     d = st.slider('Maximum Rating', 3010, 3470, 3470, key='bmaxrating')
                 is_use_opening = st.checkbox('Use Opening')
-                select_opening = st.selectbox('Select Opening', df.Opening.unique())
+                select_opening = st.multiselect('Select Opening', df.Opening.unique())
                 is_calculate = st.form_submit_button('Generate Histogram')
 
                 if is_calculate:
@@ -597,32 +597,47 @@ def main():
                                         (df.Belo >= c) & 
                                         (df.Belo <= d)]
                     if is_use_opening:
-                        df_rep = df_rep.loc[df_rep.Opening == select_opening]
+                        tbo = []
+                        tbs = []
+                        for o in select_opening:
+                            df1 = df_rep.loc[df_rep.Opening == o]
+                            if len(df1):
+                                tbo.append(df1)
+                                tbs.append([o, int(df1.Plycnt.mean())])
+                            else:
+                                tbo.append(pd.DataFrame())
+                                tbs.append([o, 0])
+                        df_rep = pd.concat(tbo, ignore_index=True)
+                        df_tbs = pd.DataFrame(tbs, columns=['Opening', 'Mean'])
 
                     if len(df_rep):
-                        minv = df_rep.Plycnt.min()
-                        maxv = df_rep.Plycnt.max()
-                        mean = df_rep.Plycnt.mean()
-                        median = df_rep.Plycnt.median()
-                        mode = df_rep.Plycnt.mode()[0]
-                        stdev = df_rep.Plycnt.std()
-                        data = {
-                            'min': [int(minv)],
-                            'max': [int(maxv)],
-                            'mean': [int(mean)],
-                            'median': [int(median)],
-                            'mode': [int(mode)],
-                            'stdev': [int(stdev)]
-                        }
-
-                        df_rep_stat = pd.DataFrame(data)
+                        if not is_use_opening:
+                            minv = df_rep.Plycnt.min()
+                            maxv = df_rep.Plycnt.max()
+                            mean = df_rep.Plycnt.mean()
+                            median = df_rep.Plycnt.median()
+                            mode = df_rep.Plycnt.mode()[0]
+                            stdev = df_rep.Plycnt.std()
+                            data = {
+                                'min': [int(minv)],
+                                'max': [int(maxv)],
+                                'mean': [int(mean)],
+                                'median': [int(median)],
+                                'mode': [int(mode)],
+                                'stdev': [int(stdev)]
+                            }
                         st.markdown(f'''
                         ##### Ply Count on Draw by 3-Fold Repetition
                         white minrating: {st.session_state.wminrating}, white max rating: {st.session_state.wmaxrating}  
                         black minrating: {st.session_state.bminrating}, black max rating: {st.session_state.bmaxrating}  
                         ''')
-                        st.dataframe(df_rep_stat)
-                        fig = px.histogram(df_rep, x="Plycnt")
+                        if is_use_opening:
+                            st.dataframe(df_tbs)
+                            fig = px.histogram(df_rep, x="Plycnt", color='Opening')
+                        else:
+                            df_rep_stat = pd.DataFrame(data)
+                            st.dataframe(df_rep_stat)
+                            fig = px.histogram(df_rep, x="Plycnt")
                         st.plotly_chart(fig, use_container_width=True)
                     else:
                         st.info('No entries found, try to adjust the sliders!')
