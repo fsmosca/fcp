@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.14'
+__version__ = '0.15'
 __author__ = 'fsmosca'
 
 
@@ -458,27 +458,6 @@ def main():
                 AgGrid(dft, height=250)
                 fig = px.bar(dft, x="Percent", y="Termination", orientation='h', color='Termination', height=400, text_auto=True)
                 st.plotly_chart(fig, use_container_width=True)
-
-                # 3.2 Ply count histogram on 3-fold repetition
-                df_rep = df.loc[df.Termination == 'THREEFOLD_REPETITION']
-                minv = df_rep.Plycnt.min()
-                maxv = df_rep.Plycnt.max()
-                mean = df_rep.Plycnt.mean()
-                median = df_rep.Plycnt.median()
-                mode = df_rep.Plycnt.mode()[0]
-                stdev = df_rep.Plycnt.std()
-                data = {
-                    'name': ['min', 'max', 'mean', 'median', 'mode', 'stdev'],
-                    'value': [int(minv), int(maxv), int(mean), int(median), int(mode), int(stdev)]
-                }
-                df_rep_stat = pd.DataFrame(data)
-                st.markdown('''
-                ##### Ply Count on Draw by 3-Fold Repetition  
-                Hover on the plot to see the ply count range and frequency.
-                ''')
-                st.dataframe(df_rep_stat)
-                fig2 = px.histogram(df_rep, x="Plycnt")
-                st.plotly_chart(fig2, use_container_width=True)
 
         # 4. Engines that defeated opponents whose rating is higher than itself.
         if is_good_engine:
