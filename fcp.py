@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.20'
+__version__ = '0.21'
 __author__ = 'fsmosca'
 
 
@@ -334,7 +334,7 @@ def main():
             ''')
             AgGrid(df_standing, height=1200)
 
-        with st.expander('ROUND-ROBIN TABLE'):
+        with st.expander('ROUND-ROBIN TABLE', expanded=True):
             st.write('##### Tie-break system')
             df_tb = pd.DataFrame({'Name': ['DE', 'Wins', 'SB'], 'Desc': ['Direct Encounter', 'Number of wins', 'Sonneborn-Berger']})
             st.dataframe(df_tb)
