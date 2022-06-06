@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.16'
+__version__ = '0.17'
 __author__ = 'fsmosca'
 
 
@@ -490,20 +490,32 @@ def main():
         # 5. Plycount
         if is_plycnt:
             with st.expander('PLYCOUNT', expanded=True):
-                # Win Ply count table by player
+                # Player plycount average for wwin, bwin, wloss, bloss, wdraw, bdraw
+                st.markdown('''
+                Average ply count or half-move by player.
+                ''')
                 data = []
                 for p in player.Name:
-                    dfwwin = df.loc[(df.White == p) & (df.Result == '1-0')]
-                    dfbwin = df.loc[(df.Black == p) & (df.Result == '0-1')]
-                    dfwwin_plycnt_mean = dfwwin.Plycnt.mean()
-                    dfbwin_plycnt_mean = dfbwin.Plycnt.mean()
-                    data.append([p, int(dfwwin_plycnt_mean), int(dfbwin_plycnt_mean)])
-                dfplycnt = pd.DataFrame(data, columns=['Name', 'White', 'Black'])
-                st.markdown(f'''
-                ##### Win Plycnt Mean
-                The average ply count for white and black when the player wins.
-                ''')
-                AgGrid(dfplycnt)
+                    df_wwin = df.loc[(df.White == p) & (df.Result == '1-0')]
+                    wwin = df_wwin.Plycnt.mean() if len(df_wwin) else 0
+                    df_wloss = df.loc[(df.White == p) & (df.Result == '0-1')]
+                    wloss = df_wloss.Plycnt.mean() if len(df_wloss) else 0
+                    df_wdraw = df.loc[(df.White == p) & (df.Result == '1/2-1/2')]
+                    wdraw = df_wdraw.Plycnt.mean() if len(df_wdraw) else 0
+
+                    df_bwin = df.loc[(df.Black == p) & (df.Result == '0-1')]
+                    bwin = df_bwin.Plycnt.mean() if len(df_bwin) else 0
+                    df_bloss = df.loc[(df.Black == p) & (df.Result == '1-0')]
+                    bloss = df_bloss.Plycnt.mean() if len(df_bloss) else 0
+                    df_bdraw = df.loc[(df.Black == p) & (df.Result == '1/2-1/2')]
+                    bdraw = df_bdraw.Plycnt.mean() if len(df_bdraw) else 0
+
+                    df_all = df.loc[(df.White == p) | (df.Black == p)]
+                    v_all = df_all.Plycnt.mean() if len(df_all) else 0
+
+                    data.append([p, int(wwin), int(wloss), int(wdraw), int(bwin), int(bloss), int(bdraw), int(v_all)])
+                df_plycnt = pd.DataFrame(data, columns=['Name', 'Wwin', 'Wloss', 'Wdraw', 'Bwin', 'Bloss', 'Bdraw', 'All'])
+                AgGrid(df_plycnt)
 
                 st.write(f'##### Compare players by ply count')
                 cols = st.columns([1, 1])
