@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.18'
+__version__ = '0.19'
 __author__ = 'fsmosca'
 
 
@@ -433,23 +433,74 @@ def main():
         if is_opening:
             data = []
             for o in df.Opening.unique():
-                count = len(df.loc[df.Opening == o])
-                wwin = df.loc[(df.Opening == o) & (df.Result == '1-0')]
-                bwin = df.loc[(df.Opening == o) & (df.Result == '0-1')]
+                o_games = len(df.loc[df.Opening == o])
+                ws = df.loc[df.Opening == o].Wscore.sum()
+                bs = df.loc[df.Opening == o].Bscore.sum()
                 wpct, bpct = 0, 0
-                if len(wwin):
-                    wpct = round(100*len(wwin) / count, 2)
-                if len(bwin):
-                    bpct = round(100*len(bwin) / count, 2)
-                data.append([o, games, count, round(100*count/games, 3), wpct, bpct])
-            dfo = pd.DataFrame(data, columns=['Opening', 'Games', 'Count', 'Count%', 'WhiteWin%', 'BlackWin%'])
-            dfo = dfo.sort_values(by=['Count', 'Opening'], ascending=[False, True])
+                if ws:
+                    wpct = round(100*ws / o_games, 2)
+                if bs:
+                    bpct = round(100*bs / o_games, 2)
+                data.append([o, o_games, wpct, bpct])
+            dfo = pd.DataFrame(data, columns=['Opening', 'Games', 'Wscore%', 'Bscore%'])
+            dfo = dfo.sort_values(by=['Games', 'Opening'], ascending=[False, True])
             with st.expander('OPENING', expanded=True):
                 AgGrid(dfo)
-                st.write('##### Top 20')
+                st.write('##### Top 20 by number of games')
                 dfo_top10 = dfo.head(20)
-                fig = px.bar(dfo_top10, x="Count%", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
+                fig = px.bar(dfo_top10, x="Games", y="Opening", orientation='h', color='Opening', height=1000, text_auto=True)
                 st.plotly_chart(fig, use_container_width=True)
+
+            # Interactive
+            with st.container():
+                st.markdown('''
+                ##### Select player to show opening data
+                ''')
+                sel_p = st.selectbox('Select player', player.Name)
+                for p in player.Name:
+                    if p != sel_p:
+                        continue
+                    df_wp = df.loc[df.White == p]
+                    df_bp = df.loc[df.Black == p]
+
+                    data_o = []
+                    for o in df_wp.Opening.unique():
+                        wgame = len(df_wp.loc[df_wp.Opening == o])
+                        bgame = len(df_bp.loc[df_bp.Opening == o])
+
+                        if wgame:
+                            wwin = df_wp.loc[(df_wp.Opening == o) & (df_wp.Result == '1-0')]
+                            wdraw = df_wp.loc[(df_wp.Opening == o) & (df_wp.Result == '1/2-1/2')]
+                            sw = len(wwin) + len(wdraw)/2
+                            sw_pct = round(100*sw/wgame, 2)
+                        else:
+                            sw = 0
+                            sw_pct = 0
+
+                        if bgame:
+                            bwin = df_bp.loc[(df_bp.Opening == o) & (df_bp.Result == '0-1')]
+                            bdraw = df_bp.loc[(df_bp.Opening == o) & (df_bp.Result == '1/2-1/2')]
+                            sb = len(bwin) + len(bdraw)/2
+                            sb_pct = round(100*sb/bgame, 2)
+                        else:
+                            sb = 0
+                            sb_pct = 0
+
+                        all_game = wgame + bgame
+                        if all_game:
+                            all_score = sw + sb
+                            all_pct = round(100 * all_score / all_game, 2)
+                        else:
+                            all_score = 0
+                            all_pct = 0
+
+                        data_o.append([o, wgame, sw, sw_pct, bgame, sb, sb_pct, all_game, all_score, all_pct])
+
+                    df_p_o = pd.DataFrame(data_o, columns=['Opening', 'Wgames', 'Wscore', 'Wscore%', 'Bgames', 'Bscore', 'Bscore%', 'Allgames', 'AllScore', 'AllScore%'])
+                    df_p_o = df_p_o.sort_values(by=['Allgames', 'Opening'], ascending=[False, True])
+                    df_p_o = df_p_o.reset_index(drop=True)
+                    AgGrid(df_p_o)
+                    break
 
         # 3. Termination
         if is_termination:
