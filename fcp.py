@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.21'
+__version__ = '0.21.1'
 __author__ = 'fsmosca'
 
 
@@ -60,6 +60,9 @@ def get_material(board):
 
 
 def get_pgn_data(fn):
+    """
+    Generate a table of tournament info and results and save to csv.
+    """
     max_games = 1000000
     cnt = 0
     data = []
@@ -123,6 +126,9 @@ def get_pgn_data(fn):
         return df, players
 
 def gen_data():
+    """
+    Generate tournament standing and save to csv file.
+    """
     fn = 'complete_fcp-tourney-2022.pgn'
     df, players = get_pgn_data(fn)
     print(df)
@@ -187,6 +193,9 @@ def load_standing():
 
 
 def load_games(f, name, opp, rnd, is_white=True):
+    """
+    Find games for replay.
+    """
     game_offsets = []
 
     while True:
@@ -203,7 +212,6 @@ def load_games(f, name, opp, rnd, is_white=True):
             if name in headers.get("Black", "?") and opp in headers.get("White", "?") and rnd == headers.get("Round", "?"):
                 game_offsets.append(offset)
                 break
-
 
     return game_offsets
 
