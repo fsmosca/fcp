@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.19'
+__version__ = '0.20'
 __author__ = 'fsmosca'
 
 
@@ -158,6 +158,11 @@ def gen_data():
     first_column = df_score.pop('Rank')
     df_score.insert(0, "Rank", first_column)
     df_score.to_csv('standing.csv', index=False)
+
+
+# @st.cache(allow_output_mutation=True)
+def get_roundrobin_table():
+    return pd.read_csv('rr.csv')
 
 
 @st.cache
@@ -328,6 +333,28 @@ def main():
             Ratings are rounded to the nearest ten for visual clarity.
             ''')
             AgGrid(df_standing, height=1200)
+
+        with st.expander('ROUND-ROBIN TABLE'):
+            st.write('##### Tie-break system')
+            df_tb = pd.DataFrame({'Name': ['DE', 'Wins', 'SB'], 'Desc': ['Direct Encounter', 'Number of wins', 'Sonneborn-Berger']})
+            st.dataframe(df_tb)
+
+            st.write('##### Table')
+            df_rr_o = get_roundrobin_table()
+            df_rr = df_rr_o.copy()
+            my_column = df_rr.pop('Games')
+            df_rr.insert(2, 'Games', my_column)
+            my_column = df_rr.pop('Score')
+            df_rr.insert(3, 'Score', my_column)
+            my_column = df_rr.pop('Score%')
+            df_rr.insert(4, 'Score%', my_column)
+            my_column = df_rr.pop('DE')
+            df_rr.insert(5, 'DE', my_column)
+            my_column = df_rr.pop('Wins')
+            df_rr.insert(6, 'Wins', my_column)
+            my_column = df_rr.pop('SB')
+            df_rr.insert(7, 'SB', my_column)
+            st.dataframe(df_rr.style.format(subset=['Score', 'DE', 'SB', 'Score%'], formatter="{:.1f}"))
 
         # Show the opponents of this selected player.
         with st.expander('OPPONENTS', expanded=True):
