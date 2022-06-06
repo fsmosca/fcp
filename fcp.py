@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.17'
+__version__ = '0.18'
 __author__ = 'fsmosca'
 
 
@@ -559,12 +559,12 @@ def main():
             with st.expander('ENDING', expanded=True):
                 data = []
                 for p in player.Name:
+                    df_p = df.loc[(df.White == p) | (df.Black == p)] 
                     dfw = df.loc[(df.White == p) & (df.Material <= 20)]
                     dfb = df.loc[(df.Black == p) & (df.Material <= 20)]
-                    games = len(df)
                     ending = len(dfw) + len(dfb)
                     ending_score = dfw.Wscore.sum() + dfb.Bscore.sum()
-                    data.append([p, games, ending, round(100*ending/games, 2), round(100*ending_score/ending, 2)])
+                    data.append([p, len(df_p), ending, round(100*ending/len(df_p), 2), round(100*ending_score/ending, 2)])
                 dfmat = pd.DataFrame(data, columns=['Name', 'Games', 'NumPos', 'NumPos%', 'Score%'])
                 st.markdown(f'''
                 ##### Player ending data
