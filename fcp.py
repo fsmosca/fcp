@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.15'
+__version__ = '0.16'
 __author__ = 'fsmosca'
 
 
@@ -203,7 +203,7 @@ def load_games(f, name, opp, rnd, is_white=True):
     return game_offsets
 
 
-def replay_grid(df, selected_player, color):
+def replay_grid(inputpgn, df, selected_player, color):
     """
     Returns the game that we are going to replay.
     """
@@ -233,8 +233,7 @@ def replay_grid(df, selected_player, color):
             is_white = True if col_selected == 'White' else False
             opp = df_selected.iloc[0][col_opp]
             rnd = str(df_selected.iloc[0]['Round'])
-            fn = 'fcp-tourney-2022.pgn'
-            with open(fn, 'r') as f:
+            with open(inputpgn, 'r') as f:
                 game_offsets = load_games(f, selected_player, opp, rnd, is_white=is_white)
                 for offset in game_offsets:
                     f.seek(offset)
@@ -245,6 +244,12 @@ def replay_grid(df, selected_player, color):
 
 
 def main():
+    # inputpgn is not a complete pgnfile, it has only decisive games. The complete pgn file
+    # is big and exceeded github limit. This file is used to replay games. However the csv
+    # files are generated from complete pgn files. You can download the complete pgn file
+    # from FCP page at https://www.amateurschach.de/main/_fcp-tourney-2022.htm.
+    inputpgn = 'fcp-tourney-2022.pgn'
+
     with st.sidebar:
         selected = option_menu("Main Menu", ["Home", 'Player List', 'Pairing', 'Standing', 'Statistics', 'Replay'],
             icons=['house', 'person-lines-fill', 'table', 'book', 'file-bar-graph-fill', 'file-play'],
@@ -675,7 +680,7 @@ def main():
 
         # Black opp
         with st.expander('BLACK OPPONENTS', expanded=True):
-            rgame = replay_grid(df, selected_player, 'White')
+            rgame = replay_grid(inputpgn, df, selected_player, 'White')
             if rgame is not None:
                 st.write('##### Replay Selected Game')
                 html_string = f'''
@@ -696,7 +701,7 @@ def main():
 
         # White opp
         with st.expander('WHITE OPPONENTS', expanded=True):
-            rgame = replay_grid(df, selected_player, 'Black')
+            rgame = replay_grid(inputpgn, df, selected_player, 'Black')
             if rgame is not None:
                 st.write('##### Replay Selected Game')
                 html_string = f'''
