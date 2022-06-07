@@ -439,12 +439,12 @@ Re1 *
 1. Nf3 d5 2. c4 dxc4 3. e3 Be6 *
 
 [ECO "A10"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 *
 
 [ECO "A10"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 g6 *
 
@@ -521,7 +521,7 @@ Re1 *
 1. c4 c6 2. Nf3 d5 3. b3 Bg4 *
 
 [ECO "A13"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 e6 *
 
@@ -532,7 +532,7 @@ Re1 *
 1. c4 e6 2. Nf3 Nf6 3. g3 a6 4. Bg2 b5 *
 
 [ECO "A13"]
-[Opening "English opening"]
+[Opening "English"]
 [Variation "Agincourt variation"]
 
 1. c4 e6 2. Nf3 d5 *
@@ -544,7 +544,7 @@ Re1 *
 1. c4 e6 2. Nf3 d5 3. b3 Nf6 4. Bb2 c5 5. e3 *
 
 [ECO "A13"]
-[Opening "English opening"]
+[Opening "English"]
 [Variation "Agincourt variation"]
 
 1. c4 e6 2. Nf3 d5 3. g3 *
@@ -592,12 +592,12 @@ Re1 *
 1. c4 Nf6 2. b4 *
 
 [ECO "A15"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 Nf6 2. Nf3 *
 
 [ECO "A16"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 Nf6 2. Nc3 *
 
@@ -632,7 +632,7 @@ Re1 *
 1. c4 Nf6 2. Nc3 d5 3. cxd5 Nxd5 4. Nf3 g6 5. g3 Bg7 6. Bg2 e5 *
 
 [ECO "A17"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 Nf6 2. Nc3 e6 *
 
@@ -679,7 +679,7 @@ Re1 *
 1. c4 Nf6 2. Nc3 e6 3. e4 c5 *
 
 [ECO "A20"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 e5 *
 
@@ -694,7 +694,7 @@ Re1 *
 1. c4 e5 2. Nf3 e4 *
 
 [ECO "A21"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 e5 2. Nc3 *
 
@@ -709,7 +709,7 @@ Re1 *
 1. c4 e5 2. Nc3 d6 3. g3 c6 *
 
 [ECO "A21"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 e5 2. Nc3 d6 3. Nf3 *
 
@@ -724,7 +724,7 @@ Re1 *
 1. c4 e5 2. Nc3 Bb4 *
 
 [ECO "A22"]
-[Opening "English opening"]
+[Opening "English"]
 
 1. c4 e5 2. Nc3 Nf6 *
 
