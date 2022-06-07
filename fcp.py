@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.21.2'
+__version__ = '0.21.3'
 __author__ = 'fsmosca'
 
 
@@ -282,7 +282,7 @@ def main():
         with cols[0]:
             st.markdown(f"""
             ##### Introduction
-            This page is all about the FCP's top 41 Chess Engine Tournament done by Frank.
+            This page is all about the [FCP's](https://www.amateurschach.de/) top 41 Chess Engine Tournament done by Frank.
             It contains pairing results, standings, statistics and game replay of
             decisive games.
             """)
@@ -290,7 +290,7 @@ def main():
             st.markdown(f"""
             ##### Game Source
             The source of the games is taken from [FCP's top 41 Chess Engines Tournament](https://www.amateurschach.de/main/_fcp-tourney-2022.htm)
-            specifically the fcp-tourney-2022.pgn file.
+            specifically the fcp-tourney-2022.pgn file. Download the file fcp-tourney-2022.zip.
             """)
 
             st.markdown(f"""
@@ -305,6 +305,7 @@ def main():
             [Python Chess](https://python-chess.readthedocs.io/en/latest/)  
             [Chess Tempo](https://chesstempo.com/)  
             [Plotly](https://plotly.com/)  
+            [PGN-extract](https://www.cs.kent.ac.uk/people/staff/djb/pgn-extract/)  
             """)
 
     elif selected == 'Player List':
