@@ -4046,7 +4046,7 @@ Qf3 Qc7 *
 Qf3 Qc7 9. O-O-O Nbd7 *
 
 [ECO "C00"]
-[Opening "French defence"]
+[Opening "French"]
 
 1. e4 e6 *
 
@@ -4074,7 +4074,7 @@ Qf3 Qc7 9. O-O-O Nbd7 *
 1. e4 e6 2. f4 *
 
 [ECO "C00"]
-[Opening "French defence"]
+[Opening "French"]
 
 1. e4 e6 2. Nf3 *
 
@@ -4085,7 +4085,7 @@ Qf3 Qc7 9. O-O-O Nbd7 *
 1. e4 e6 2. Nf3 d5 3. e5 c5 4. b4 *
 
 [ECO "C00"]
-[Opening "French defence"]
+[Opening "French"]
 
 1. e4 e6 2. Nc3 *
 
@@ -4120,7 +4120,7 @@ Qf3 Qc7 9. O-O-O Nbd7 *
 1. e4 e6 2. d3 d5 3. Nd2 Nf6 4. Ngf3 Nc6 5. Be2 *
 
 [ECO "C00"]
-[Opening "French defence"]
+[Opening "French"]
 
 1. e4 e6 2. d4 *
 
@@ -4135,7 +4135,7 @@ Qf3 Qc7 9. O-O-O Nbd7 *
 1. e4 e6 2. d4 a6 *
 
 [ECO "C00"]
-[Opening "French defence"]
+[Opening "French"]
 
 1. e4 e6 2. d4 d5 *
 
@@ -4353,7 +4353,7 @@ cxd4 Nb6 *
 1. e4 e6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Qd5 *
 
 [ECO "C11"]
-[Opening "French defence"]
+[Opening "French"]
 
 1. e4 e6 2. d4 d5 3. Nc3 Nf6 *
 
