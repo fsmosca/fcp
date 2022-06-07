@@ -10,7 +10,7 @@ David Barnes (D.J.Barnes@ukc.ac.uk)
 }
 
 [ECO "A00"]
-[Opening "Polish (Sokolsky) opening"]
+[Opening "Polish"]
 
 1. b4 *
 
@@ -43,7 +43,7 @@ David Barnes (D.J.Barnes@ukc.ac.uk)
 1. g3 e5 2. Nf3 *
 
 [ECO "A00"]
-[Opening "Grob's attack"]
+[Opening "Grob"]
 
 1. g4 *
 
@@ -66,42 +66,47 @@ David Barnes (D.J.Barnes@ukc.ac.uk)
 1. g4 d5 2. Bg2 Bxg4 3. c4 d4 *
 
 [ECO "A00"]
-[Opening "Clemenz (Mead's, Basman's or de Klerk's) opening"]
+[Opening "Clemenz"]
 
 1. h3 *
 
 [ECO "A00"]
-[Opening "Global opening"]
+[Opening "Clemenz"]
+[Variation "Global"]
 
 1. h3 e5 2. a3 *
 
 [ECO "A00"]
-[Opening "Amar (Paris) opening"]
+[Opening "Amar"]
 
 1. Nh3 *
 
 [ECO "A00"]
-[Opening "Amar gambit"]
+[Opening "Amar"]
+[Variation "Amar gambit"]
 
 1. Nh3 d5 2. g3 e5 3. f4 Bxh3 4. Bxh3 exf4 *
 
 [ECO "A00"]
-[Opening "Dunst (Sleipner, Heinrichsen) opening"]
+[Opening "Dunst"]
 
 1. Nc3 *
 
 [ECO "A00"]
-[Opening "Dunst (Sleipner, Heinrichsen) opening"]
+[Opening "Dunst"]
+[Variation "1...e5"]
 
 1. Nc3 e5 *
 
 [ECO "A00"]
-[Opening "Battambang opening"]
+[Opening "Dunst"]
+[Variation "Battambang"]
 
 1. Nc3 e5 2. a3 *
 
 [ECO "A00"]
-[Opening "Novosibirsk opening"]
+[Opening "Dunst"]
+[Variation "Novosibirsk"]
 
 1. Nc3 c5 2. d4 cxd4 3. Qxd4 Nc6 4. Qh4 *
 
@@ -4055,7 +4060,8 @@ Qf3 Qc7 9. O-O-O Nbd7 *
 1. e4 e6 *
 
 [ECO "C00"]
-[Opening "French defence, Steiner variation"]
+[Opening "French"]
+[Variation "Steiner"]
 
 1. e4 e6 2. c4 *
 
@@ -6289,7 +6295,7 @@ c3 d5 *
 1. e4 e5 2. Nf3 d6 3. d4 Nd7 4. Bc4 c6 5. c3 *
 
 [ECO "C42"]
-[Opening "Petrov's defence"]
+[Opening "Petrov"]
 
 1. e4 e5 2. Nf3 Nf6 *
 
@@ -10578,69 +10584,80 @@ Bd3 dxc4 9. Bxc4 Nd5 10. Bxe7 Qxe7 11. O-O Nxc3 12. Rxc3 e5 13. dxe5 Nxe5
 14. Nxe5 Qxe5 *
 
 [ECO "D70"]
-[Opening "Neo-Gruenfeld defence"]
+[Opening "Neo-Gruenfeld"]
 
 1. d4 Nf6 2. c4 g6 3. f3 d5 *
 
 [ECO "D70"]
-[Opening "Neo-Gruenfeld (Kemeri) defence"]
+[Opening "Neo-Gruenfeld"]
+[Variation "Kemeri"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 *
 
 [ECO "D71"]
-[Opening "Neo-Gruenfeld, 5.cd"]
+[Opening "Neo-Gruenfeld"]
+[Variation "5.cd"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. cxd5 Nxd5 *
 
 [ECO "D72"]
-[Opening "Neo-Gruenfeld, 5.cd, main line"]
+[Opening "Neo-Gruenfeld"]
+[Variation "5.cd, main line"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. cxd5 Nxd5 6. e4 Nb6 7. Ne2 *
 
 [ECO "D73"]
-[Opening "Neo-Gruenfeld, 5.Nf3"]
+[Opening "Neo-Gruenfeld"]
+[Variation "5.Nf3"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 *
 
 [ECO "D74"]
-[Opening "Neo-Gruenfeld, 6.cd Nxd5, 7.O-O"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.cd Nxd5, 7.O-O"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. cxd5 Nxd5 7. O-O *
 
 [ECO "D75"]
-[Opening "Neo-Gruenfeld, 6.cd Nxd5, 7.O-O c5, 8.Nc3"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.cd Nxd5, 7.O-O c5, 8.Nc3"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. cxd5 Nxd5 7. O-O c5 8.
 Nc3 *
 
 [ECO "D75"]
-[Opening "Neo-Gruenfeld, 6.cd Nxd5, 7.O-O c5, 8.dc"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.cd Nxd5, 7.O-O c5, 8.dc"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. cxd5 Nxd5 7. O-O c5 8.
 dxc5 *
 
 [ECO "D76"]
-[Opening "Neo-Gruenfeld, 6.cd Nxd5, 7.O-O Nb6"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.cd Nxd5, 7.O-O Nb6"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. cxd5 Nxd5 7. O-O Nb6 *
 
 [ECO "D77"]
-[Opening "Neo-Gruenfeld, 6.O-O"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.O-O"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. O-O *
 
 [ECO "D78"]
-[Opening "Neo-Gruenfeld, 6.O-O c6"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.O-O c6"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. O-O c6 *
 
 [ECO "D79"]
-[Opening "Neo-Gruenfeld, 6.O-O, main line"]
+[Opening "Neo-Gruenfeld"]
+[Variation "6.O-O, main line"]
 
 1. d4 Nf6 2. c4 g6 3. g3 d5 4. Bg2 Bg7 5. Nf3 O-O 6. O-O c6 7. cxd5 cxd5 *
 
 [ECO "D80"]
-[Opening "Gruenfeld defence"]
+[Opening "Gruenfeld"]
 
 1. d4 Nf6 2. c4 g6 3. Nc3 d5 *
 
@@ -11659,12 +11676,13 @@ a3 Bxc3 9. bxc3 *
 a3 Bxc3 9. bxc3 dxc4 10. Bxc4 *
 
 [ECO "E60"]
-[Opening "King's Indian defence"]
+[Opening "King's Indian"]
 
 1. d4 Nf6 2. c4 g6 *
 
 [ECO "E60"]
-[Opening "King's Indian, 3.Nf3"]
+[Opening "King's Indian"]
+[Variation "3.Nf3"]
 
 1. d4 Nf6 2. c4 g6 3. Nf3 *
 
