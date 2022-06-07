@@ -684,7 +684,8 @@ Re1 *
 1. c4 e5 *
 
 [ECO "A20"]
-[Opening "English, Nimzovich variation"]
+[Opening "English"]
+[Variation "Nimzovich variation"]
 
 1. c4 e5 2. Nf3 *
 
