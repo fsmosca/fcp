@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.21.1'
+__version__ = '0.21.2'
 __author__ = 'fsmosca'
 
 
@@ -480,6 +480,7 @@ def main():
             dfo = pd.DataFrame(data, columns=['Opening', 'Games', 'Wscore%', 'Bscore%'])
             dfo = dfo.sort_values(by=['Games', 'Opening'], ascending=[False, True])
             with st.expander('OPENING', expanded=True):
+                st.markdown('The opening names are based from eco.pgn from pgn-extract.')
                 AgGrid(dfo)
                 st.write('##### Top 20 by number of games')
                 dfo_top10 = dfo.head(20)
@@ -681,6 +682,7 @@ def main():
                 df_eco = pd.DataFrame(data, columns=['ECO', 'Games', 'Count', 'Count%'])
                 df_eco = df_eco.sort_values(by=['Count'], ascending=[False])
                 df_eco = df_eco.reset_index(drop=True)
+                st.markdown('The ECO codes are based from eco.pgn from pgn-extract.')
                 AgGrid(df_eco, height=200)
 
                 st.write('##### Top 20 by count')
