@@ -10,7 +10,7 @@ Dependencies:
 """
 
 
-__version__ = '0.21.3'
+__version__ = '0.21.4'
 __author__ = 'fsmosca'
 
 
@@ -344,8 +344,12 @@ def main():
             AgGrid(df_standing, height=1200)
 
         with st.expander('ROUND-ROBIN TABLE', expanded=True):
-            st.write('##### Tie-break system')
-            df_tb = pd.DataFrame({'Name': ['DE', 'Wins', 'SB'], 'Desc': ['Direct Encounter', 'Number of wins', 'Sonneborn-Berger']})
+            st.write(f'''
+            ##### Tie-break system
+            Tie-break has to be applied in order for example if the tied players are already decided by DE
+            then ranking can be updated and there is no need to apply the Wins and SB.
+            ''')
+            df_tb = pd.DataFrame({'Priority': [1, 2, 3], 'Code': ['DE', 'Wins', 'SB'], 'Name': ['Direct Encounter', 'Number of wins', 'Sonneborn-Berger']})
             st.dataframe(df_tb)
 
             st.write('##### Table')
