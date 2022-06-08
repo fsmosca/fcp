@@ -4823,14 +4823,21 @@ Qxg7 Rg8 9. Qxh7 cxd4 10. Ne2 *
 1. e4 e5 2. d4 exd4 *
 
 [ECO "C21"]
-[Opening "Centre game, Kieseritsky variation"]
+[Opening "Centre game"]
+[Variation "Kieseritsky"]
 
 1. e4 e5 2. d4 exd4 3. Nf3 c5 4. Bc4 b5 *
 
 [ECO "C21"]
-[Opening "Halasz gambit"]
+[Opening "Centre game"]
+[Variation "Halasz"]
 
 1. e4 e5 2. d4 exd4 3. f4 *
+
+[ECO "C21"]
+[Opening "Centre game"]
+
+1. e4 e5 2. d4 exd4 3. Qxd4 *
 
 [ECO "C21"]
 [Opening "Danish gambit"]
@@ -4854,11 +4861,6 @@ Qxg7 Rg8 9. Qxh7 cxd4 10. Ne2 *
 [Variation "Soerensen defence"]
 
 1. e4 e5 2. d4 exd4 3. c3 d5 *
-
-[ECO "C21"]
-[Opening "Centre game"]
-
-1. e4 e5 2. d4 exd4 3. Qxd4 *
 
 [ECO "C22"]
 [Opening "Centre game"]
