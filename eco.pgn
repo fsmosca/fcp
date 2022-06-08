@@ -1131,37 +1131,31 @@ Qxd4 d6 9. Rd1 a6 10. b3 Nbd7 *
 
 1. d4 d6 2. c4 g6 3. Nc3 Bg7 *
 
-[ECO "A41"]
-[Opening "Robatsch defence"]
-[Variation "Rossolimo variation"]
-
-1. e4 g6 2. d4 Bg7 3. Nf3 d6 4. c4 Bg4 *
-
 [ECO "A42"]
-[Opening "Modern defence"]
-[Variation "Averbakh system"]
+[Opening "Averbakh"]
 
 1. d4 d6 2. c4 g6 3. Nc3 Bg7 4. e4 *
 
 [ECO "A42"]
-[Opening "Pterodactyl defence"]
+[Opening "Averbakh"]
+[Variation "Pterodactyl"]
 
 1. d4 d6 2. c4 g6 3. Nc3 Bg7 4. e4 c5 5. Nf3 Qa5 *
 
 [ECO "A42"]
-[Opening "Modern defence"]
-[Variation "Averbakh system, Randspringer variation"]
+[Opening "Averbakh"]
+[Variation "Randspringer"]
 
 1. d4 d6 2. c4 g6 3. Nc3 Bg7 4. e4 f5 *
 
 [ECO "A42"]
-[Opening "Modern defence"]
-[Variation "Averbakh system, Kotov variation"]
+[Opening "Averbakh"]
+[Variation "Kotov"]
 
 1. d4 d6 2. c4 g6 3. Nc3 Bg7 4. e4 Nc6 *
 
 [ECO "A43"]
-[Opening "Old Benoni defence"]
+[Opening "Old Benoni"]
 
 1. d4 c5 *
 
@@ -1178,27 +1172,29 @@ Qxd4 d6 9. Rd1 a6 10. b3 Nbd7 *
 1. d4 c5 2. d5 f5 *
 
 [ECO "A43"]
-[Opening "Old Benoni defence"]
+[Opening "Old Benoni"]
 
 1. d4 c5 2. d5 Nf6 *
 
 [ECO "A43"]
-[Opening "Woozle defence"]
+[Opening "Old Benoni"]
+[Variation "Woozle defence"]
 
 1. d4 c5 2. d5 Nf6 3. Nc3 Qa5 *
 
 [ECO "A43"]
-[Opening "Old Benoni defence"]
+[Opening "Old Benoni"]
 
 1. d4 c5 2. d5 Nf6 3. Nf3 *
 
 [ECO "A43"]
-[Opening "Hawk (Habichd) defence"]
+[Opening "Old Benoni"]
+[Variation "Hawk (Habichd) defence"]
 
 1. d4 c5 2. d5 Nf6 3. Nf3 c4 *
 
 [ECO "A43"]
-[Opening "Old Benoni defence"]
+[Opening "Old Benoni"]
 
 1. d4 c5 2. d5 d6 *
 
@@ -1209,12 +1205,13 @@ Qxd4 d6 9. Rd1 a6 10. b3 Nbd7 *
 1. d4 c5 2. d5 d6 3. Nc3 g6 *
 
 [ECO "A44"]
-[Opening "Old Benoni defence"]
+[Opening "Old Benoni"]
 
 1. d4 c5 2. d5 e5 *
 
 [ECO "A44"]
-[Opening "Semi-Benoni (`blockade variation')"]
+[Opening "Old Benoni"]
+[Variation "Semi-Benoni (`blockade variation')"]
 
 1. d4 c5 2. d5 e5 3. e4 d6 *
 
@@ -2421,59 +2418,72 @@ Nc3 e6 9. Nf3 Qd7 10. Be2 O-O-O 11. O-O Be7 *
 1. e4 Nf6 2. e5 Nd5 3. d4 d6 4. Nf3 Bg4 5. c4 Nb6 6. d5 *
 
 [ECO "B06"]
-[Opening "Robatsch (modern) defence"]
+[Opening "Robatsch"]
 
 1. e4 g6 *
 
 [ECO "B06"]
-[Opening "Norwegian defence"]
+[Opening "Robatsch"]
+[Variation "Norwegian defence"]
 
 1. e4 g6 2. d4 Nf6 3. e5 Nh5 4. g4 Ng7 *
 
 [ECO "B06"]
-[Opening "Robatsch (modern) defence"]
+[Opening "Robatsch"]
 
 1. e4 g6 2. d4 Bg7 *
 
 [ECO "B06"]
-[Opening "Robatsch defence"]
+[Opening "Robatsch"]
 [Variation "three pawns attack"]
 
 1. e4 g6 2. d4 Bg7 3. f4 *
 
 [ECO "B06"]
-[Opening "Robatsch defence"]
+[Opening "Robatsch"]
 
 1. e4 g6 2. d4 Bg7 3. Nc3 *
 
 [ECO "B06"]
-[Opening "Robatsch defence"]
+[Opening "Robatsch"]
 [Variation "Gurgenidze variation"]
 
 1. e4 g6 2. d4 Bg7 3. Nc3 c6 4. f4 d5 5. e5 h5 *
 
 [ECO "B06"]
-[Opening "Robatsch (modern) defence"]
+[Opening "Robatsch"]
 
 1. e4 g6 2. d4 Bg7 3. Nc3 d6 *
 
 [ECO "B06"]
-[Opening "Robatsch defence"]
+[Opening "Robatsch"]
 [Variation "two knights variation"]
 
 1. e4 g6 2. d4 Bg7 3. Nc3 d6 4. Nf3 *
 
 [ECO "B06"]
-[Opening "Robatsch defence"]
+[Opening "Robatsch"]
 [Variation "two knights, Suttles variation"]
 
 1. e4 g6 2. d4 Bg7 3. Nc3 d6 4. Nf3 c6 *
 
 [ECO "B06"]
-[Opening "Robatsch defence"]
+[Opening "Robatsch"]
 [Variation "Pseudo-Austrian attack"]
 
 1. e4 g6 2. d4 Bg7 3. Nc3 d6 4. f4 *
+
+[ECO "B06"]
+[Opening "Robatsch"]
+[Variation "Rossolimo variation"]
+
+1. e4 g6 2. d4 Bg7 3. Nf3 d6 4. c4 Bg4 *
+
+[ECO "B06"]
+[Opening "Robatsch"]
+[Variation "Geller's system"]
+
+1. e4 g6 2. d4 Bg7 3. Nf3 d6 4. c3 *
 
 [ECO "B07"]
 [Opening "Pirc"]
@@ -2531,12 +2541,6 @@ Nc3 e6 9. Nf3 Qd7 10. Be2 O-O-O 11. O-O Be7 *
 [Variation "bayonet (Mariotti) attack"]
 
 1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Be2 Bg7 5. h4 *
-
-[ECO "B07"]
-[Opening "Robatsch defence"]
-[Variation "Geller's system"]
-
-1. e4 g6 2. d4 Bg7 3. Nf3 d6 4. c3 *
 
 [ECO "B08"]
 [Opening "Pirc"]
