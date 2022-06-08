@@ -1098,12 +1098,14 @@ Qxd4 d6 9. Rd1 a6 10. b3 Nbd7 *
 1. d4 e6 2. c4 Bb4+ *
 
 [ECO "A40"]
-[Opening "Modern defence"]
+[Opening "Queen's pawn"]
+[Variation "Modern"]
 
 1. d4 g6 *
 
 [ECO "A40"]
-[Opening "Beefeater defence"]
+[Opening "Queen's pawn"]
+[Variation "Beefeater"]
 
 1. d4 g6 2. c4 Bg7 3. Nc3 c5 4. d5 Bxc3+ 5. bxc3 f5 *
 
@@ -1113,18 +1115,19 @@ Qxd4 d6 9. Rd1 a6 10. b3 Nbd7 *
 1. d4 d6 *
 
 [ECO "A41"]
-[Opening "Old Indian"]
-[Variation "Tartakower (Wade) variation"]
+[Opening "Queen's pawn"]
+[Variation "Wade"]
 
 1. d4 d6 2. Nf3 Bg4 *
 
 [ECO "A41"]
-[Opening "Old Indian defence"]
+[Opening "Queen's pawn"]
 
 1. d4 d6 2. c4 *
 
 [ECO "A41"]
-[Opening "Modern defence"]
+[Opening "Queen's pawn"]
+[Variation "Modern"]
 
 1. d4 d6 2. c4 g6 3. Nc3 Bg7 *
 
