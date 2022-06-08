@@ -234,7 +234,7 @@ David Barnes (D.J.Barnes@ukc.ac.uk)
 1. b3 b6 *
 
 [ECO "A02"]
-[Opening "Bird's opening"]
+[Opening "Bird"]
 
 1. f4 *
 
@@ -257,7 +257,8 @@ David Barnes (D.J.Barnes@ukc.ac.uk)
 1. f4 e5 2. fxe5 d6 3. exd6 Bxd6 4. Nf3 Nh6 5. d4 *
 
 [ECO "A02"]
-[Opening "Bird's opening, Swiss gambit"]
+[Opening "Bird"]
+[Variation "Swiss gambit"]
 
 1. f4 f5 2. e4 fxe4 3. Nc3 Nf6 4. g4 *
 
@@ -268,23 +269,24 @@ David Barnes (D.J.Barnes@ukc.ac.uk)
 1. f4 g5 *
 
 [ECO "A03"]
-[Opening "Bird's opening"]
+[Opening "Bird"]
 
 1. f4 d5 *
 
 [ECO "A03"]
-[Opening "Mujannah opening"]
+[Opening "Bird"]
+[Variation "Mujannah"]
 
 1. f4 d5 2. c4 *
 
 [ECO "A03"]
-[Opening "Bird's opening"]
+[Opening "Bird"]
 [Variation "Williams gambit"]
 
 1. f4 d5 2. e4 *
 
 [ECO "A03"]
-[Opening "Bird's opening"]
+[Opening "Bird"]
 [Variation "Lasker variation"]
 
 1. f4 d5 2. Nf3 Nf6 3. e3 c5 *
