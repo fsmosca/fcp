@@ -717,12 +717,14 @@ Re1 *
 1. c4 e5 2. Nc3 *
 
 [ECO "A21"]
-[Opening "English, Troeger defence"]
+[Opening "English"]
+[Variation "Troeger"]
 
 1. c4 e5 2. Nc3 d6 3. g3 Be6 4. Bg2 Nc6 *
 
 [ECO "A21"]
-[Opening "English, Keres variation"]
+[Opening "English"]
+[Variation "Keres variation"]
 
 1. c4 e5 2. Nc3 d6 3. g3 c6 *
 
@@ -732,12 +734,14 @@ Re1 *
 1. c4 e5 2. Nc3 d6 3. Nf3 *
 
 [ECO "A21"]
-[Opening "English, Smyslov defence"]
+[Opening "English"]
+[Variation "Smyslov"]
 
 1. c4 e5 2. Nc3 d6 3. Nf3 Bg4 *
 
 [ECO "A21"]
-[Opening "English, Kramnik-Shirov counterattack"]
+[Opening "English"]
+[Variation "Kramnik-Shirov counterattack"]
 
 1. c4 e5 2. Nc3 Bb4 *
 
