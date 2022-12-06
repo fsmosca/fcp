@@ -1,4 +1,4 @@
-streamlit==1.10.0
+streamlit
 chess==1.9.1
 streamlit-aggrid==0.2.3.post2
 streamlit-option-menu==0.3.2
